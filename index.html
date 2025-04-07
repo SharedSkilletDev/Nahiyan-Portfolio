@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nahiyan Bin Noor | Data Scientist & Biomedical Informatics</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%);
+        }
+        
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-700">Nahiyan<span class="text-gray-800">.dev</span></a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-gray-700 hover:text-blue-600">About</a>
+                <a href="#experience" class="nav-link text-gray-700 hover:text-blue-600">Experience</a>
+                <a href="#projects" class="nav-link text-gray-700 hover:text-blue-600">Projects</a>
+                <a href="#publications" class="nav-link text-gray-700 hover:text-blue-600">Publications</a>
+                <a href="#skills" class="nav-link text-gray-700 hover:text-blue-600">Skills</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600">Contact</a>
+            </div>
+            <button class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="gradient-bg text-white">
+        <div class="container mx-auto px-6 py-24 md:py-32 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 text-center md:text-left mb-12 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Nahiyan Bin Noor</h1>
+                <h2 class="text-xl md:text-2xl font-light mb-6">Data Scientist & Biomedical Informatics Researcher</h2>
+                <p class="text-lg mb-8 text-blue-100">
+                    Transforming healthcare with data science, machine learning, and AI.
+                </p>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    <a href="#contact" class="bg-white text-blue-700 hover:bg-gray-100 font-semibold px-6 py-3 rounded-lg transition duration-300">
+                        Get in Touch
+                    </a>
+                    <a href="#projects" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold px-6 py-3 rounded-lg transition duration-300">
+                        View Projects
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="/api/placeholder/400/400" alt="Nahiyan Bin Noor" class="rounded-full h-64 w-64 object-cover border-4 border-white shadow-xl">
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">About Me</h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <img src="/api/placeholder/500/300" alt="About Nahiyan" class="rounded-lg shadow-lg w-full">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h3 class="text-2xl font-semibold mb-4">Data Scientist & Biomedical Informatics Researcher</h3>
+                    <p class="text-gray-700 mb-6">
+                        I'm a dedicated researcher and data scientist specializing in healthcare analytics and AI applications. 
+                        Currently pursuing a Ph.D. in Biomedical Informatics at the University of Arkansas for Medical Sciences 
+                        while working as a Data Analyst at the Institute for Digital Health and Innovation.
+                    </p>
+                    <p class="text-gray-700 mb-6">
+                        My research focuses on leveraging machine learning and artificial intelligence to improve healthcare outcomes, 
+                        particularly in predictive analytics for patient care and toxicity detection in online health discussions.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Healthcare Analytics</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Machine Learning</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Data Science</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">AI in Healthcare</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">NLP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Education</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                            <i class="fas fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Ph.D. in Biomedical Informatics</h3>
+                            <p class="text-gray-600">University of Arkansas for Medical Sciences</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-2">Expected 2027</p>
+                    <p class="text-gray-600 mb-2">CGPA: 4.00/4.00</p>
+                    <p class="text-gray-700">Coursework: Biostatistics I & II, Machine Learning for Biomedical Informatics, Clinical Data Standard</p>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                            <i class="fas fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Master of Information Science</h3>
+                            <p class="text-gray-600">University of Arkansas at Little Rock</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-2">May 2023</p>
+                    <p class="text-gray-600 mb-2">CGPA: 3.90/4.00</p>
+                    <p class="text-gray-700">Coursework: Analysis of Algorithms, AI, Operating Systems, Statistics, Linear Algebra</p>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                            <i class="fas fa-certificate text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Graduate Certificate in Data Science</h3>
+                            <p class="text-gray-600">University of Arkansas at Little Rock</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-2">May 2023</p>
+                    <p class="text-gray-600 mb-2">CGPA: 4.00/4.00</p>
+                    <p class="text-gray-700">Coursework: Database Systems & Info Architecture, Data Protection & Privacy, Data Science & Technologies, Information Visualization</p>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                            <i class="fas fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">B.Sc. in Electrical & Electronic Engineering</h3>
+                            <p class="text-gray-600">Chittagong University of Engineering & Technology</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-2">October 2019</p>
+                    <p class="text-gray-600 mb-2">CGPA: 3.54/4.00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Professional Experience</h2>
+            <div class="space-y-8">
+                <!-- Experience Item 1 -->
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Intermediate Data Analyst</h3>
+                            <p class="text-gray-600">Institute for Digital Health and Innovation, UAMS</p>
+                        </div>
+                        <p class="text-gray-500 mt-2 md:mt-0">June 2023 - Present</p>
+                    </div>
+                    <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                        <li>Designed and deployed ML-based decision support tools in Power BI for healthcare analytics.</li>
+                        <li>Developed predictive models on Veterans Health Administration data using Gradient Boosting and Random Forest to predict retention, overdoses, and mortality among veterans receiving B-MOUD.</li>
+                        <li>Achieved a predictive AUC-ROC of 0.76, F1 of 0.88, helping reduce opioid-related emergency visits.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 2 -->
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Data Scientist</h3>
+                            <p class="text-gray-600">COSMOS, UALR</p>
+                        </div>
+                        <p class="text-gray-500 mt-2 md:mt-0">August 2021 - May 2023</p>
+                    </div>
+                    <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                        <li>Collected and analyzed 2M+ Reddit posts using Pushshift API to study social media toxicity trends.</li>
+                        <li>Built an NLP-based toxicity detection model with 83% accuracy, identifying Reddit as the most toxic platform with an average toxicity score of 0.36.</li>
+                        <li>Applied sentiment analysis and linguistic pattern recognition to enhance content moderation strategies.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 3 -->
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Data Science Intern</h3>
+                            <p class="text-gray-600">Data Glacier (Remote)</p>
+                        </div>
+                        <p class="text-gray-500 mt-2 md:mt-0">Summer 2022</p>
+                    </div>
+                    <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                        <li>Conducted EDA on taxi market trends and built a predictive ML model deployed via Flask and Heroku.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 4 -->
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Electrical Data Analyst</h3>
+                            <p class="text-gray-600">Renata Limited, Bangladesh</p>
+                        </div>
+                        <p class="text-gray-500 mt-2 md:mt-0">November 2019 - July 2021</p>
+                    </div>
+                    <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                        <li>Performed predictive maintenance analysis, reducing downtime by 20%.</li>
+                        <li>Managed a team of 30+ engineers in HVAC data collection and optimized workflow.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Featured Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="card bg-white rounded-lg shadow overflow-hidden">
+                    <img src="/api/placeholder/400/250" alt="AI Chatbot" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">AI Chatbot using GPT & LangChain</h3>
+                        <p class="text-gray-700 mb-4">Developed and deployed an AI-powered chatbot with long-term memory retention and real-time response capabilities.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">OpenAI API</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">LangChain</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">FastAPI</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">Vector Databases</span>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                            View Project <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="card bg-white rounded-lg shadow overflow-hidden">
+                    <img src="/api/placeholder/400/250" alt="RAG-based Search System" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">RAG-based Search System</h3>
+                        <p class="text-gray-700 mb-4">Built an optimized RAG pipeline that improved document search accuracy by 40%.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">LlamaIndex</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">Hugging Face</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">FAISS</span>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                            View Project <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="card bg-white rounded-lg shadow overflow-hidden">
+                    <img src="/api/placeholder/400/250" alt="Non-Invasive Anemia Detection" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Non-Invasive Anemia Detection</h3>
+                        <p class="text-gray-700 mb-4">Created an ML-based system for anemia detection using eye conjunctiva images, achieving 92% accuracy.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">Machine Learning</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">Computer Vision</span>
+                            <span class="bg-gray-200 px-2 py-1 rounded text-xs">Ensemble Models</span>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                            Try it here <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Selected Publications</h2>
+            <div class="space-y-6">
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Toxicity in Reddit Discussion Threads: Impacts and Predictive Insights</h3>
+                    <p class="text-gray-600 mb-2">16th International Conference on Social Computing, Behavioral-Cultural Modeling Prediction and Behavior Representation in Modeling and Simulation</p>
+                    <p class="text-gray-700 mb-4">Nahiyan Bin Noor, Niloofar Yousefi, Billy Spann, and Nitin Agarwal</p>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Comparing Toxicity Across Social Media Platforms for COVID 19 Discourse</h3>
+                    <p class="text-gray-600 mb-2">The Ninth International Conference on Human and Social Analytics (HUSO 2023)</p>
+                    <p class="text-gray-700 mb-2">Nahiyan Bin Noor, Niloofar Yousefi, Billy Spann, and Nitin Agarwal</p>
+                    <p class="text-gray-600">Citations: 12</p>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Comparative Study Between Decision Tree, SVM, and KNN to Predict Anaemic Condition</h3>
+                    <p class="text-gray-600 mb-2">IEEE International Conference on Biomedical Engineering, Computer and Information Technology for Health, 2019</p>
+                    <p class="text-gray-700 mb-2">Nahiyan Bin Noor, Md Saeid Anwar, Mrinmoy Dey</p>
+                    <p class="text-gray-600">Citations: 28</p>
+                </div>
+
+                <div class="text-center mt-8">
+                    <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+                        View All Publications
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Technical Skills</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Programming Languages</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Python</span>
+                                <span class="text-gray-600">95%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">R</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">SQL</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Go</span>
+                                <span class="text-gray-600">70%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mt-10 mb-6">Data Analytics</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Power BI</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Data Visualization</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Machine Learning & AI</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Predictive Analytics</span>
+                                <span class="text-gray-600">95%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">NLP</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Statistical Modeling</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Deep Learning</span>
+                                <span class="text-gray-600">80%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mt-10 mb-6">Deployment</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">AWS</span>
+                                <span class="text-gray-600">75%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">Docker</span>
+                                <span class="text-gray-600">80%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-700">FastAPI</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12">
+                <h3 class="text-xl font-semibold mb-6">Tools & Technologies</h3>
+                <div class="flex flex-wrap gap-3">
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">Hugging Face</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">OpenAI API</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">LangChain</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">Transformers</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">NLTK</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">CNN</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">FAISS</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">ChromaDB</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">MongoDB</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">PostgreSQL</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">MLOps</span>
+                    <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-full">Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Awards & Recognition</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mr-4">
+                            <i class="fas fa-trophy text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Best Paper Award</h3>
+                            <p class="text-gray-600">The Ninth International Conference on Human and Social Analytics (HUSO 2023)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mr-4">
+                            <i class="fas fa-award text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Outstanding Graduate Student Award</h3>
+                            <p class="text-gray-600">University of Arkansas at Little Rock (2022-2023)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mr-4">
+                            <i class="fas fa-money-bill-wave text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Travel Grant ($1500)</h3>
+                            <p class="text-gray-600">COSMOS Research Center, UALR (2022-2023)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mr-4">
+                            <i class="fas fa-award text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Outstanding Masters Student Award</h3>
+                            <p class="text-gray-600">University of Arkansas at Little Rock (2021-2022)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured News Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Featured In</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-3">Outstanding Graduate Student Making a Difference with Research</h3>
+                    <p class="text-gray-600 mb-4">2023</p>
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                        Read Article <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow hover:shadow-lg">
+                    <h3 class="text-xl font-semibold mb-3">Detecting Anemia Using AI & Human Eyes at UA Little Rock</h3>
+                    <p class="text-gray-600 mb-4">2023</p>
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                        Read Article <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 gradient-bg text-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Get In Touch</h2>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2">
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block mb-2 font-medium">Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 rounded-lg bg-blue-800 bg-opacity-50 border border-blue-400 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white" placeholder="Your Name">
+                        </div>
+                        <div>
+                            <label for="email" class="block mb-2 font-medium">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 rounded-lg bg-blue-800 bg-opacity-50 border border-blue-400 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white" placeholder="Your Email">
+                        </div>
+                        <div>
+                            <label for="message" class="block mb-2 font-medium">Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-2 rounded-lg bg-blue-800 bg-opacity-50 border border-blue-400 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white" placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" class="bg-white text-blue-700 hover:bg-gray-100 font-semibold px-6 py-3 rounded-lg transition duration-300">Send Message</button>
+                    </form>
+                </div>
+                <div class="md:w-1/2 flex flex-col justify-center">
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white mr-4">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Email</h3>
+                                <p class="text-blue-100">nahiyan.cuet@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white mr-4">
+                                <i class="fas fa-phone text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Phone</h3>
+                                <p class="text-blue-100">+1 (501) 539-3633</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white mr-4">
+                                <i class="fas fa-map-marker-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Location</h3>
+                                <p class="text-blue-100">Little Rock, AR</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4 mt-6">
+                            <a href="#" class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition duration-300">
+                                <i class="fab fa-linkedin-in text-xl"></i>
+                            </a>
+                            <a href="#" class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition duration-300">
+                                <i class="fab fa-github text-xl"></i>
+                            </a>
+                            <a href="#" class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition duration-300">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="#" class="h-12 w-12 bg-blue-800 bg-opacity-50 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition duration-300">
+                                <i class="fab fa-google-scholar text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-gray-300">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="#" class="text-2xl font-bold text-white">Nahiyan<span class="text-blue-400">.dev</span></a>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#about" class="hover:text-white transition duration-300">About</a>
+                    <a href="#experience" class="hover:text-white transition duration-300">Experience</a>
+                    <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
+                    <a href="#publications" class="hover:text-white transition duration-300">Publications</a>
+                    <a href="#contact" class="hover:text-white transition duration-300">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center">
+                <p>&copy; 2025 Nahiyan Bin Noor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="backToTop" class="fixed bottom-6 right-6 h-12 w-12 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg transform transition-transform duration-300 hover:scale-110 opacity-0 invisible">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('button.md\\:hidden');
+        const mobileMenu = document.querySelector('div.hidden.md\\:flex');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex', 'flex-col', 'absolute', 'top-16', 'left-0', 'right-0', 'bg-white', 'p-4', 'shadow-md', 'space-y-4');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex', 'flex-col', 'absolute', 'top-16', 'left-0', 'right-0', 'bg-white', 'p-4', 'shadow-md', 'space-y-4');
+                }
+            });
+        }
+        
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopButton.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenuButton.click();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
