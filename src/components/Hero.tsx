@@ -1,14 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Phone, ChevronDown } from 'lucide-react';
 
 const Hero = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // List of potential image paths to try
+  const imagePaths = [
+    '/images/IMG_4611.jpg',
+    '/images/pic00.jpg',
+    '/images/pic01.jpg',
+    '/images/pic02.jpg',
+    '/images/pic03.jpg'
+  ];
+
   const socialLinks = [
     { icon: Github, href: 'https://github.com/Nahiyan140212', label: 'GitHub' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/nahiyan-bin-noor-0a2170158/', label: 'LinkedIn' },
     { icon: Mail, href: 'mailto:nahiyan.cuet@gmail.com', label: 'Email' },
     { icon: Phone, href: 'tel:+15015393633', label: 'Phone' }
   ];
+
+  // Preload images to check which ones are available
+  useEffect(() => {
+    const checkImages = async () => {
+      for (let i = 0; i < imagePaths.length; i++) {
+        try {
+          const img = new Image();
+          img.onload = () => {
+            console.log(`Image loaded successfully: ${imagePaths[i]}`);
+            setCurrentImageIndex(i);
+            setImageLoaded(true);
+            setImageError(false);
+          };
+          img.onerror = () => {
+            console.log(`Image failed to load: ${imagePaths[i]}`);
+            if (i === imagePaths.length - 1) {
+              setImageError(true);
+            }
+          };
+          img.src = imagePaths[i];
+          
+          // If image loads successfully, break the loop
+          if (img.complete && img.naturalHeight !== 0) {
+            setCurrentImageIndex(i);
+            setImageLoaded(true);
+            setImageError(false);
+            break;
+          }
+        } catch (error) {
+          console.log(`Error checking image ${imagePaths[i]}:`, error);
+        }
+      }
+    };
+
+    checkImages();
+  }, []);
+
+  const handleImageError = () => {
+    console.log(`Image error for: ${imagePaths[currentImageIndex]}`);
+    if (currentImageIndex < imagePaths.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    } else {
+      setImageError(true);
+      setImageLoaded(false);
+    }
+  };
+
+  const handleImageLoad = () => {
+    console.log(`Image loaded successfully: ${imagePaths[currentImageIndex]}`);
+    setImageLoaded(true);
+    setImageError(false);
+  };
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20 dark:from-blue-900/40 dark:via-purple-900/40 dark:to-pink-900/40">
@@ -32,34 +97,33 @@ const Hero = () => {
               {/* Animated border */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-gradient p-1">
                 <div className="bg-white dark:bg-dark-900 rounded-full p-2">
-                  <img
-                    src="/images/IMG_4611.jpg"
-                    alt="Nahiyan Bin Noor - Data Scientist & ML Engineer"
-                    className="w-80 h-80 rounded-full object-cover shadow-2xl"
-                    onError={(e) => {
-                      console.error('Profile image failed to load, trying fallback...');
-                      const img = e.currentTarget;
-                      
-                      // Try alternative image paths
-                      if (img.src.includes('IMG_4611.jpg')) {
-                        img.src = '/images/pic00.jpg';
-                      } else if (img.src.includes('pic00.jpg')) {
-                        img.src = '/images/pic01.jpg';
-                      } else {
-                        // If all images fail, show placeholder
-                        img.style.display = 'none';
-                        
-                        // Create and show a fallback placeholder
-                        const placeholder = document.createElement('div');
-                        placeholder.className = 'w-80 h-80 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-6xl font-bold shadow-2xl';
-                        placeholder.textContent = 'NN';
-                        img.parentNode?.appendChild(placeholder);
-                      }
-                    }}
-                    onLoad={() => {
-                      console.log('Profile image loaded successfully!');
-                    }}
-                  />
+                  {!imageError && !imageLoaded && (
+                    /* Loading placeholder */
+                    <div className="w-80 h-80 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse flex items-center justify-center">
+                      <div className="text-gray-500 dark:text-gray-400 text-lg">Loading...</div>
+                    </div>
+                  )}
+                  
+                  {!imageError && (
+                    <img
+                      key={currentImageIndex} // Force re-render when image changes
+                      src={imagePaths[currentImageIndex]}
+                      alt="Nahiyan Bin Noor - Data Scientist & ML Engineer"
+                      className={`w-80 h-80 rounded-full object-cover shadow-2xl transition-opacity duration-300 ${
+                        imageLoaded ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      onError={handleImageError}
+                      onLoad={handleImageLoad}
+                      style={{ display: imageLoaded ? 'block' : 'none' }}
+                    />
+                  )}
+                  
+                  {imageError && (
+                    /* Fallback placeholder when all images fail */
+                    <div className="w-80 h-80 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-6xl font-bold shadow-2xl">
+                      NN
+                    </div>
+                  )}
                 </div>
               </div>
               
@@ -180,7 +244,7 @@ const Hero = () => {
           >
             <ChevronDown className="w-6 h-6 text-gray-400 dark:text-gray-500" />
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
