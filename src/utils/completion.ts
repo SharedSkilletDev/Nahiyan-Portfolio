@@ -6,13 +6,19 @@ export async function generateCompletion(prompt: string): Promise<string> {
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const response = await fetch(`${supabaseUrl}/functions/v1/euri-completion`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ prompt }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
@@ -32,6 +38,10 @@ export async function generateCompletion(prompt: string): Promise<string> {
       throw new Error('Invalid response format from completion API');
     }
   } catch (error) {
+    if (error.name === 'AbortError') {
+      console.error('Completion API request timed out');
+      throw new Error('Request timed out');
+    }
     console.error('Completion API error:', error);
     throw error;
   }

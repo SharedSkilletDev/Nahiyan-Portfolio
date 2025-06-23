@@ -2,6 +2,7 @@ import { createEmbedding } from './embedding';
 import { generateCompletion } from './completion';
 import { chunkText } from './chunking';
 import { findSimilarChunks } from './retrieval';
+import { findBestResponse } from './fallbackResponses';
 
 // Knowledge base from the provided information
 const KNOWLEDGE_BASE = `
@@ -105,48 +106,100 @@ GitHub: https://github.com/Nahiyan140212
 // Initialize the knowledge base chunks and embeddings
 let knowledgeChunks: Array<{ text: string; embedding?: number[] }> = [];
 let isInitialized = false;
+let useFullRAG = false; // Flag to determine if full RAG is available
 
 async function initializeKnowledgeBase() {
   if (isInitialized) return;
   
   try {
+    console.log('Initializing knowledge base...');
+    
     // Chunk the knowledge base
     const chunks = chunkText(KNOWLEDGE_BASE, 500, 50);
+    console.log(`Created ${chunks.length} text chunks`);
     
-    // Create embeddings for each chunk
-    knowledgeChunks = await Promise.all(
-      chunks.map(async (chunk) => {
-        try {
-          const embedding = await createEmbedding(chunk);
-          return { text: chunk, embedding };
-        } catch (error) {
-          console.warn('Failed to create embedding for chunk:', error);
-          return { text: chunk };
-        }
-      })
+    // Try to create embeddings for each chunk
+    const embeddingPromises = chunks.map(async (chunk, index) => {
+      try {
+        const embedding = await createEmbedding(chunk);
+        console.log(`Created embedding for chunk ${index + 1}/${chunks.length}`);
+        return { text: chunk, embedding };
+      } catch (error) {
+        console.warn(`Failed to create embedding for chunk ${index + 1}:`, error.message);
+        return { text: chunk };
+      }
+    });
+    
+    // Wait for all embeddings with a timeout
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Embedding timeout')), 10000)
     );
     
+    try {
+      knowledgeChunks = await Promise.race([
+        Promise.all(embeddingPromises),
+        timeoutPromise
+      ]) as Array<{ text: string; embedding?: number[] }>;
+      
+      // Check if we have any successful embeddings
+      const successfulEmbeddings = knowledgeChunks.filter(chunk => chunk.embedding).length;
+      
+      if (successfulEmbeddings > 0) {
+        useFullRAG = true;
+        console.log(`Knowledge base initialized with ${successfulEmbeddings}/${chunks.length} embeddings - Full RAG enabled`);
+      } else {
+        throw new Error('No embeddings created successfully');
+      }
+    } catch (error) {
+      console.warn('Embedding creation failed or timed out, falling back to text-only chunks:', error.message);
+      knowledgeChunks = chunks.map(text => ({ text }));
+      useFullRAG = false;
+    }
+    
     isInitialized = true;
-    console.log(`Knowledge base initialized with ${knowledgeChunks.length} chunks`);
+    console.log(`Knowledge base initialization complete. Full RAG: ${useFullRAG}`);
   } catch (error) {
     console.error('Failed to initialize knowledge base:', error);
     // Fallback: use chunks without embeddings
     knowledgeChunks = chunkText(KNOWLEDGE_BASE, 500, 50).map(text => ({ text }));
+    useFullRAG = false;
     isInitialized = true;
+    console.log('Knowledge base initialized in fallback mode');
   }
 }
 
 export async function ragQuery(query: string): Promise<string> {
   try {
+    console.log('Processing RAG query:', query);
+    
     // Initialize knowledge base if not already done
     await initializeKnowledgeBase();
     
+    if (useFullRAG) {
+      console.log('Using full RAG system');
+      return await performFullRAG(query);
+    } else {
+      console.log('Using fallback response system');
+      return findBestResponse(query);
+    }
+    
+  } catch (error) {
+    console.error('RAG query failed:', error);
+    console.log('Falling back to pattern matching');
+    return findBestResponse(query);
+  }
+}
+
+async function performFullRAG(query: string): Promise<string> {
+  try {
     // Create embedding for the query
     let queryEmbedding: number[] | undefined;
     try {
       queryEmbedding = await createEmbedding(query);
+      console.log('Query embedding created successfully');
     } catch (error) {
-      console.warn('Failed to create query embedding:', error);
+      console.warn('Failed to create query embedding:', error.message);
+      // Fall back to text-based search
     }
     
     // Find relevant chunks
@@ -156,6 +209,8 @@ export async function ragQuery(query: string): Promise<string> {
       queryEmbedding,
       5 // Top 5 most relevant chunks
     );
+    
+    console.log(`Found ${relevantChunks.length} relevant chunks`);
     
     // Create context from relevant chunks
     const context = relevantChunks.map(chunk => chunk.text).join('\n\n');
@@ -170,11 +225,18 @@ User Question: ${query}
 
 Please provide a helpful and accurate response based on the information provided:`;
 
-    const response = await generateCompletion(prompt);
-    return response;
+    try {
+      const response = await generateCompletion(prompt);
+      console.log('Completion generated successfully');
+      return response;
+    } catch (error) {
+      console.warn('Completion generation failed:', error.message);
+      // Fall back to pattern matching if completion fails
+      return findBestResponse(query);
+    }
     
   } catch (error) {
-    console.error('RAG query failed:', error);
-    return "I apologize, but I'm having trouble processing your request right now. Please try again later or contact Nahiyan directly at nahiyan.cuet@gmail.com.";
+    console.error('Full RAG failed:', error);
+    throw error;
   }
 }

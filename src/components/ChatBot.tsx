@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle } from 'lucide-react';
 import { ragQuery } from '../utils/ragSystem';
 
 interface Message {
@@ -8,6 +8,7 @@ interface Message {
   text: string;
   isUser: boolean;
   timestamp: Date;
+  isError?: boolean;
 }
 
 const ChatBot = () => {
@@ -22,6 +23,7 @@ const ChatBot = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'fallback'>('checking');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -31,6 +33,24 @@ const ChatBot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Check connection status on first open
+  useEffect(() => {
+    if (isOpen && connectionStatus === 'checking') {
+      checkConnectionStatus();
+    }
+  }, [isOpen, connectionStatus]);
+
+  const checkConnectionStatus = async () => {
+    try {
+      // Try a simple test query to check if the full RAG system is working
+      await ragQuery('test connection');
+      setConnectionStatus('connected');
+    } catch (error) {
+      console.log('Full RAG system unavailable, using fallback mode');
+      setConnectionStatus('fallback');
+    }
+  };
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
@@ -58,11 +78,14 @@ const ChatBot = () => {
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
+      console.error('Chat error:', error);
+      
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I apologize, but I'm having trouble processing your request right now. Please try again later or contact Nahiyan directly.",
+        text: "I apologize, but I'm having trouble processing your request right now. Please try asking your question in a different way, or contact Nahiyan directly at nahiyan.cuet@gmail.com.",
         isUser: false,
-        timestamp: new Date()
+        timestamp: new Date(),
+        isError: true
       };
 
       setMessages(prev => [...prev, errorMessage]);
@@ -75,6 +98,32 @@ const ChatBot = () => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
+    }
+  };
+
+  const getStatusIndicator = () => {
+    switch (connectionStatus) {
+      case 'checking':
+        return <Loader className="w-3 h-3 animate-spin text-yellow-500" />;
+      case 'connected':
+        return <div className="w-3 h-3 bg-green-500 rounded-full" />;
+      case 'fallback':
+        return <AlertCircle className="w-3 h-3 text-orange-500" />;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusText = () => {
+    switch (connectionStatus) {
+      case 'checking':
+        return 'Connecting...';
+      case 'connected':
+        return 'AI Assistant (Full Mode)';
+      case 'fallback':
+        return 'AI Assistant (Offline Mode)';
+      default:
+        return 'AI Assistant';
     }
   };
 
@@ -109,7 +158,12 @@ const ChatBot = () => {
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800 dark:text-white">AI Assistant</h3>
+                  <div className="flex items-center space-x-2">
+                    <h3 className="font-semibold text-gray-800 dark:text-white text-sm">
+                      {getStatusText()}
+                    </h3>
+                    {getStatusIndicator()}
+                  </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Ask me about Nahiyan</p>
                 </div>
               </div>
@@ -120,6 +174,16 @@ const ChatBot = () => {
                 <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               </button>
             </div>
+
+            {/* Connection Status Banner */}
+            {connectionStatus === 'fallback' && (
+              <div className="px-4 py-2 bg-orange-500/20 border-b border-orange-500/30">
+                <p className="text-xs text-orange-700 dark:text-orange-300 flex items-center space-x-1">
+                  <AlertCircle className="w-3 h-3" />
+                  <span>Running in offline mode - responses may be limited</span>
+                </p>
+              </div>
+            )}
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -132,10 +196,14 @@ const ChatBot = () => {
                     <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.isUser 
                         ? 'bg-blue-500' 
+                        : message.isError
+                        ? 'bg-red-500'
                         : 'bg-gradient-to-r from-purple-500 to-pink-500'
                     }`}>
                       {message.isUser ? (
                         <User className="w-3 h-3 text-white" />
+                      ) : message.isError ? (
+                        <AlertCircle className="w-3 h-3 text-white" />
                       ) : (
                         <Bot className="w-3 h-3 text-white" />
                       )}
@@ -143,6 +211,8 @@ const ChatBot = () => {
                     <div className={`p-3 rounded-2xl ${
                       message.isUser
                         ? 'bg-blue-500 text-white'
+                        : message.isError
+                        ? 'bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30'
                         : 'bg-white/20 dark:bg-gray-800/50 text-gray-800 dark:text-white'
                     }`}>
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>

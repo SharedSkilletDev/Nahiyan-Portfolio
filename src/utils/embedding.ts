@@ -6,13 +6,19 @@ export async function createEmbedding(text: string): Promise<number[]> {
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+
     const response = await fetch(`${supabaseUrl}/functions/v1/euri-embedding`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ text }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
@@ -32,6 +38,10 @@ export async function createEmbedding(text: string): Promise<number[]> {
       throw new Error('Invalid response format from embedding API');
     }
   } catch (error) {
+    if (error.name === 'AbortError') {
+      console.error('Embedding API request timed out');
+      throw new Error('Request timed out');
+    }
     console.error('Embedding API error:', error);
     throw error;
   }
