@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap, ExternalLink, Bug } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap, ExternalLink, Bug, Coffee } from 'lucide-react';
 import { ragQuery, checkStreamlitStatus } from '../utils/ragSystem';
 import EnhancedAI from './EnhancedAI';
 
@@ -163,9 +163,9 @@ const ChatBot = () => {
       case 'enhanced':
         return <Zap className="w-2 h-2 sm:w-3 sm:h-3 text-green-500" />;
       case 'basic':
-        return isWakingUp ? <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin text-blue-500" /> : <Wifi className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" />;
+        return isWakingUp ? <Coffee className="w-2 h-2 sm:w-3 sm:h-3 text-blue-500 animate-pulse" /> : <Wifi className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" />;
       case 'waking':
-        return <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin text-blue-500" />;
+        return <Coffee className="w-2 h-2 sm:w-3 sm:h-3 text-blue-500 animate-pulse" />;
       case 'error':
         return <AlertCircle className="w-2 h-2 sm:w-3 sm:h-3 text-red-500" />;
       default:
@@ -221,6 +221,9 @@ const ChatBot = () => {
       >
         <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
         <span>Enhanced AI</span>
+        {connectionStatus === 'basic' && isWakingUp && (
+          <Coffee className="w-3 h-3 sm:w-4 sm:h-4 animate-pulse" />
+        )}
       </motion.button>
 
       {/* Chat Button */}
@@ -309,6 +312,7 @@ const ChatBot = () => {
                 <p className="text-xs text-emerald-700 dark:text-emerald-300 flex items-center space-x-1">
                   <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
                   <span>Try Enhanced AI with RAG!</span>
+                  {isWakingUp && <Coffee className="w-2 h-2 sm:w-3 sm:h-3 animate-pulse" />}
                 </p>
                 <button 
                   onClick={() => setIsEnhancedAIOpen(true)}
@@ -325,7 +329,7 @@ const ChatBot = () => {
               <div className="px-3 sm:px-4 py-2 bg-orange-500/20 border-b border-orange-500/30">
                 <p className="text-xs text-orange-700 dark:text-orange-300 flex items-center space-x-1">
                   <Wifi className="w-2 h-2 sm:w-3 sm:h-3" />
-                  <span>Running in basic mode - enhanced AI is starting up</span>
+                  <span>Running in basic mode - enhanced AI may be sleeping</span>
                 </p>
               </div>
             )}
@@ -333,7 +337,7 @@ const ChatBot = () => {
             {(connectionStatus === 'waking' || isWakingUp) && (
               <div className="px-3 sm:px-4 py-2 bg-blue-500/20 border-b border-blue-500/30">
                 <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center space-x-1">
-                  <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin" />
+                  <Coffee className="w-2 h-2 sm:w-3 sm:h-3 animate-pulse" />
                   <span>Enhanced RAG AI mode is waking up...</span>
                 </p>
               </div>
