@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Phone, ChevronDown, Zap, ExternalLink } from 'lucide-react';
+import { Github, Linkedin, Mail, Phone, ChevronDown } from 'lucide-react';
 
 const Hero = () => {
   const socialLinks = [
@@ -55,42 +55,11 @@ const Hero = () => {
             16 publications with 155+ citations.
           </motion.p>
 
-          {/* Enhanced AI Assistant CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-2xl p-4 sm:p-6 backdrop-blur-md border border-emerald-500/30 max-w-2xl mx-auto"
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0 sm:space-x-4">
-              <div className="text-center sm:text-left">
-                <h3 className="text-lg font-bold text-emerald-700 dark:text-emerald-300 mb-1">
-                  🤖 Ask Me Anything!
-                </h3>
-                <p className="text-sm text-emerald-600 dark:text-emerald-400">
-                  Try my Enhanced AI Assistant with RAG capabilities
-                </p>
-              </div>
-              <motion.a
-                href="https://askme-about-nahiyan.streamlit.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base font-semibold flex items-center space-x-2 whitespace-nowrap"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Zap className="w-4 h-4" />
-                <span>Try Enhanced AI</span>
-                <ExternalLink className="w-4 h-4" />
-              </motion.a>
-            </div>
-          </motion.div>
-
           <motion.div
             className="flex justify-center space-x-4 sm:space-x-6 px-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
+            transition={{ duration: 0.8, delay: 1 }}
           >
             {socialLinks.map((link, index) => (
               <motion.a
@@ -103,7 +72,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.4 + index * 0.1 }}
+                transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
               >
                 <link.icon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300" />
               </motion.a>
@@ -114,7 +83,7 @@ const Hero = () => {
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.6 }}
+            transition={{ duration: 0.8, delay: 1.4 }}
           >
             <motion.a
               href="#about"
@@ -140,7 +109,7 @@ const Hero = () => {
           className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2 }}
+          transition={{ duration: 1, delay: 1.8 }}
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
