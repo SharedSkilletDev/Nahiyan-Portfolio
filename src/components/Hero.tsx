@@ -33,19 +33,28 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-gradient p-1">
                 <div className="bg-white dark:bg-dark-900 rounded-full p-2">
                   <img
-                    src="/images/nahiyan-profile.png"
+                    src="/images/IMG_4611.jpg"
                     alt="Nahiyan Bin Noor - Data Scientist & ML Engineer"
                     className="w-80 h-80 rounded-full object-cover shadow-2xl"
                     onError={(e) => {
-                      console.error('Profile image failed to load');
+                      console.error('Profile image failed to load, trying fallback...');
                       const img = e.currentTarget;
-                      img.style.display = 'none';
                       
-                      // Show a fallback placeholder
-                      const placeholder = document.createElement('div');
-                      placeholder.className = 'w-80 h-80 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-6xl font-bold shadow-2xl';
-                      placeholder.textContent = 'NN';
-                      img.parentNode?.appendChild(placeholder);
+                      // Try alternative image paths
+                      if (img.src.includes('IMG_4611.jpg')) {
+                        img.src = '/images/pic00.jpg';
+                      } else if (img.src.includes('pic00.jpg')) {
+                        img.src = '/images/pic01.jpg';
+                      } else {
+                        // If all images fail, show placeholder
+                        img.style.display = 'none';
+                        
+                        // Create and show a fallback placeholder
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'w-80 h-80 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-6xl font-bold shadow-2xl';
+                        placeholder.textContent = 'NN';
+                        img.parentNode?.appendChild(placeholder);
+                      }
                     }}
                     onLoad={() => {
                       console.log('Profile image loaded successfully!');
