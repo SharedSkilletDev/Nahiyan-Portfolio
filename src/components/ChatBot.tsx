@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap, ExternalLink, Bug } from 'lucide-react';
 import { ragQuery, checkStreamlitStatus } from '../utils/ragSystem';
+import EnhancedAI from './EnhancedAI';
 
 interface Message {
   id: string;
@@ -13,6 +14,7 @@ interface Message {
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isEnhancedAIOpen, setIsEnhancedAIOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -55,7 +57,7 @@ const ChatBot = () => {
           // Add a system message about enhanced mode being available
           const systemMessage: Message = {
             id: Date.now().toString(),
-            text: "🎉 Enhanced AI mode is now active! The full AI assistant with RAG capabilities is available at https://askme-about-nahiyan.streamlit.app for the most comprehensive responses.",
+            text: "🎉 Enhanced AI mode is now active! Click the 'Enhanced AI' button for the most comprehensive responses with advanced RAG capabilities.",
             isUser: false,
             timestamp: new Date()
           };
@@ -208,10 +210,8 @@ const ChatBot = () => {
   return (
     <>
       {/* Enhanced AI Assistant Button - Always Visible */}
-      <motion.a
-        href="https://askme-about-nahiyan.streamlit.app"
-        target="_blank"
-        rel="noopener noreferrer"
+      <motion.button
+        onClick={() => setIsEnhancedAIOpen(true)}
         className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-semibold flex items-center space-x-2 hover:scale-105"
         initial={{ scale: 0, y: 20 }}
         animate={{ scale: 1, y: 0 }}
@@ -221,8 +221,7 @@ const ChatBot = () => {
       >
         <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
         <span>Enhanced AI</span>
-        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-      </motion.a>
+      </motion.button>
 
       {/* Chat Button */}
       <motion.button
@@ -272,15 +271,13 @@ const ChatBot = () => {
                   <Bug className="w-3 h-3 sm:w-4 sm:h-4" />
                 </button>
                 {/* Enhanced AI Link */}
-                <a
-                  href="https://askme-about-nahiyan.streamlit.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setIsEnhancedAIOpen(true)}
                   className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200 text-emerald-500 hover:text-emerald-400"
                   title="Open Enhanced AI Assistant"
                 >
                   <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
-                </a>
+                </button>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200"
@@ -313,15 +310,13 @@ const ChatBot = () => {
                   <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
                   <span>Try Enhanced AI with RAG!</span>
                 </p>
-                <a 
-                  href="https://askme-about-nahiyan.streamlit.app" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => setIsEnhancedAIOpen(true)}
                   className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 font-semibold flex items-center space-x-1"
                 >
                   <span>Open</span>
-                  <ExternalLink className="w-2 h-2 sm:w-3 sm:h-3" />
-                </a>
+                  <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
+                </button>
               </div>
             </div>
 
@@ -429,6 +424,12 @@ const ChatBot = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Enhanced AI Modal */}
+      <EnhancedAI 
+        isOpen={isEnhancedAIOpen} 
+        onClose={() => setIsEnhancedAIOpen(false)} 
+      />
     </>
   );
 };
