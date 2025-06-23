@@ -10,7 +10,7 @@ const Certifications = () => {
       description: 'Foundational understanding of AWS cloud services and architecture including EC2, S3, Lambda, and core security practices',
       icon: Cloud,
       color: 'from-orange-500 to-yellow-500',
-      year: '2023'
+      year: 'May 2024'
     },
     {
       title: 'AWS AI Practitioner',
@@ -18,7 +18,7 @@ const Certifications = () => {
       description: 'Expertise in AWS AI and machine learning services including Bedrock, SageMaker, and best practices for ML deployment',
       icon: Brain,
       color: 'from-purple-500 to-pink-500',
-      year: '2024'
+      year: 'May 2024'
     },
     {
       title: 'EPIC COSMOS Data Model',
@@ -26,7 +26,7 @@ const Certifications = () => {
       description: 'Specialized certification in Epic Cosmos healthcare data model and analytics for clinical research and population health',
       icon: Shield,
       color: 'from-blue-500 to-cyan-500',
-      year: '2023'
+      year: 'October 2023'
     }
   ];
 
