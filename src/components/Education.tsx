@@ -10,7 +10,7 @@ const Education = () => {
       location: 'Little Rock, AR',
       period: 'Expected Dec 2027',
       status: 'Part-time',
-      gpa: 'In Progress',
+      gpa: '4.00/4.00',
       description: 'Research focuses on leveraging large-scale healthcare data (including Epic Cosmos) to build predictive models and clinical decision support tools.',
       color: 'from-blue-500 to-cyan-500',
       achievements: []
