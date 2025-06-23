@@ -11,7 +11,7 @@ const Certifications = () => {
       icon: Cloud,
       color: 'from-orange-500 to-yellow-500',
       year: 'May 2024',
-      badgeImage: '/images/aws-certified-cloud-practitioner copy.png'
+      badgeImage: '/images/aws-certified-cloud-practitioner.png'
     },
     {
       title: 'AWS AI Practitioner',
@@ -20,7 +20,7 @@ const Certifications = () => {
       icon: Brain,
       color: 'from-purple-500 to-pink-500',
       year: 'May 2024',
-      badgeImage: '/images/aws-certified-ai-practitioner (1) copy.png'
+      badgeImage: '/images/aws-certified-ai-practitioner.png'
     },
     {
       title: 'EPIC COSMOS Data Model',
@@ -126,7 +126,7 @@ const Certifications = () => {
             >
               <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 flex items-center justify-center">
                 <img 
-                  src="/images/aws-certified-cloud-practitioner copy.png" 
+                  src="/images/aws-certified-cloud-practitioner.png" 
                   alt="AWS Cloud Practitioner Badge"
                   className="w-full h-full object-contain rounded-lg shadow-lg"
                   onError={(e) => {
@@ -154,7 +154,7 @@ const Certifications = () => {
             >
               <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 flex items-center justify-center">
                 <img 
-                  src="/images/aws-certified-ai-practitioner (1) copy.png" 
+                  src="/images/aws-certified-ai-practitioner.png" 
                   alt="AWS AI Practitioner Badge"
                   className="w-full h-full object-contain rounded-lg shadow-lg"
                   onError={(e) => {
