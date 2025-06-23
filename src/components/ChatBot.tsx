@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap, ExternalLink } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap, ExternalLink, Bug } from 'lucide-react';
 import { ragQuery, checkStreamlitStatus } from '../utils/ragSystem';
 
 interface Message {
@@ -25,6 +25,7 @@ const ChatBot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'enhanced' | 'basic' | 'waking' | 'error'>('checking');
   const [isWakingUp, setIsWakingUp] = useState(false);
+  const [debugMode, setDebugMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -245,6 +246,14 @@ const ChatBot = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-2">
+                {/* Debug Button */}
+                <button
+                  onClick={() => setDebugMode(!debugMode)}
+                  className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200 text-gray-500 hover:text-gray-400"
+                  title="Toggle Debug Mode"
+                >
+                  <Bug className="w-3 h-3 sm:w-4 sm:h-4" />
+                </button>
                 {/* Enhanced AI Link */}
                 <a
                   href="https://askme-about-nahiyan.streamlit.app"
@@ -263,6 +272,22 @@ const ChatBot = () => {
                 </button>
               </div>
             </div>
+
+            {/* Debug Info */}
+            {debugMode && (
+              <div className="px-3 sm:px-4 py-2 bg-gray-500/20 border-b border-gray-500/30">
+                <p className="text-xs text-gray-700 dark:text-gray-300">
+                  Status: {connectionStatus} | Waking: {isWakingUp ? 'Yes' : 'No'}
+                  <br />
+                  <button 
+                    onClick={() => ragQuery('test connection')}
+                    className="text-blue-500 hover:text-blue-400 underline"
+                  >
+                    Test Connection
+                  </button>
+                </p>
+              </div>
+            )}
 
             {/* Connection Status Banner */}
             {connectionStatus === 'enhanced' && (

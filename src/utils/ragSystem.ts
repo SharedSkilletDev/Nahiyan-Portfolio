@@ -1,9 +1,15 @@
-import { queryStreamlitChatbot, checkStreamlitHealth, wakeUpStreamlitApp } from './streamlitChatbot';
+import { queryStreamlitChatbot, checkStreamlitHealth, wakeUpStreamlitApp, testStreamlitConnection } from './streamlitChatbot';
 import { findBestResponse } from './fallbackResponses';
 
 export async function ragQuery(query: string): Promise<string> {
   try {
     console.log('Processing RAG query:', query);
+    
+    // For debugging - you can remove this later
+    if (query.toLowerCase().includes('test connection')) {
+      await testStreamlitConnection();
+      return 'Connection test completed. Check the browser console for details.';
+    }
     
     // First, try to query the Streamlit chatbot
     const streamlitResult = await queryStreamlitChatbot(query);
