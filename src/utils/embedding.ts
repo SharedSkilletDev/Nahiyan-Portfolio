@@ -28,16 +28,17 @@ export async function createEmbedding(text: string): Promise<number[]> {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      console.error('Embedding API detailed error:', errorData);
       
       // Check if this is a service unavailable error that should trigger fallback
       if (response.status === 503 || errorData.fallback) {
+        console.warn('Embedding service unavailable, falling back to basic mode:', errorData.error || response.statusText);
         const fallbackError = new Error(`Embedding service unavailable: ${errorData.error || response.statusText}`);
         (fallbackError as any).shouldFallback = true;
         throw fallbackError;
       }
       
-      // For other errors, provide detailed information
+      // For other errors, provide detailed information and log as error
+      console.error('Embedding API detailed error:', errorData);
       const errorMessage = errorData.debug || errorData.error || response.statusText;
       throw new Error(`Failed to create embedding (${response.status}): ${errorMessage}`);
     }
@@ -47,14 +48,14 @@ export async function createEmbedding(text: string): Promise<number[]> {
     if (data?.embedding) {
       return data.embedding;
     } else {
-      console.error('Invalid embedding response:', data);
+      console.warn('Invalid embedding response format, falling back to basic mode:', data);
       const invalidResponseError = new Error('Invalid response format from embedding API');
       (invalidResponseError as any).shouldFallback = true;
       throw invalidResponseError;
     }
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.error('Embedding API request timed out');
+      console.warn('Embedding API request timed out, falling back to basic mode');
       const timeoutError = new Error('Embedding request timed out');
       (timeoutError as any).shouldFallback = true;
       throw timeoutError;
@@ -65,15 +66,15 @@ export async function createEmbedding(text: string): Promise<number[]> {
       throw error;
     }
     
-    console.error('Embedding API error:', error);
-    
     // For network errors or connection issues, suggest fallback
     if (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('connection')) {
+      console.warn('Network error connecting to embedding service, falling back to basic mode:', error.message);
       const networkError = new Error(`Network error: ${error.message}`);
       (networkError as any).shouldFallback = true;
       throw networkError;
     }
     
+    console.error('Embedding API error:', error);
     throw error;
   }
 }

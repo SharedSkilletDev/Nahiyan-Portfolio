@@ -223,8 +223,13 @@ export async function ragQuery(query: string): Promise<string> {
     }
     
   } catch (error) {
-    console.error('RAG query failed:', error);
-    console.log('Falling back to pattern matching');
+    // Check if this is an expected fallback scenario
+    if ((error as any).shouldFallback) {
+      console.warn('RAG query falling back to pattern matching:', error.message);
+    } else {
+      console.error('RAG query failed:', error);
+    }
+    console.log('Using fallback response system');
     return findBestResponse(query);
   }
 }
