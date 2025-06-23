@@ -10,7 +10,8 @@ const Certifications = () => {
       description: 'Foundational understanding of AWS cloud services and architecture including EC2, S3, Lambda, and core security practices',
       icon: Cloud,
       color: 'from-orange-500 to-yellow-500',
-      year: 'May 2024'
+      year: 'May 2024',
+      badgeImage: '/images/aws-certified-cloud-practitioner copy.png'
     },
     {
       title: 'AWS AI Practitioner',
@@ -18,7 +19,8 @@ const Certifications = () => {
       description: 'Expertise in AWS AI and machine learning services including Bedrock, SageMaker, and best practices for ML deployment',
       icon: Brain,
       color: 'from-purple-500 to-pink-500',
-      year: 'May 2024'
+      year: 'May 2024',
+      badgeImage: '/images/aws-certified-ai-practitioner (1) copy.png'
     },
     {
       title: 'EPIC COSMOS Data Model',
@@ -59,9 +61,26 @@ const Certifications = () => {
               className="group h-full"
             >
               <div className="h-full p-4 sm:p-6 rounded-2xl bg-white/10 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300 hover:scale-105">
-                {/* Certification Icon */}
-                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r ${cert.color} flex items-center justify-center mb-4 sm:mb-6 mx-auto`}>
-                  <cert.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                {/* Certification Badge/Icon */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 flex items-center justify-center">
+                  {cert.badgeImage ? (
+                    <img 
+                      src={cert.badgeImage} 
+                      alt={`${cert.title} Badge`}
+                      className="w-full h-full object-contain rounded-lg shadow-lg"
+                      onError={(e) => {
+                        // Fallback to icon if image fails to load
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div 
+                    className={`w-full h-full rounded-full bg-gradient-to-r ${cert.color} flex items-center justify-center ${cert.badgeImage ? 'hidden' : 'flex'}`}
+                    style={{ display: cert.badgeImage ? 'none' : 'flex' }}
+                  >
+                    <cert.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                  </div>
                 </div>
 
                 {/* Certification Content */}
@@ -97,7 +116,7 @@ const Certifications = () => {
           className="mt-12 sm:mt-16 text-center"
         >
           <h3 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-6 sm:mb-8">
-            Verified Digital Badges
+            Verified AWS Digital Badges
           </h3>
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-6 sm:space-y-0 sm:space-x-8">
             {/* AWS Cloud Practitioner Badge */}
@@ -105,8 +124,20 @@ const Certifications = () => {
               className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gradient-to-br from-orange-400 to-yellow-500 rounded-full flex items-center justify-center mb-3">
-                <Cloud className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
+              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 flex items-center justify-center">
+                <img 
+                  src="/images/aws-certified-cloud-practitioner copy.png" 
+                  alt="AWS Cloud Practitioner Badge"
+                  className="w-full h-full object-contain rounded-lg shadow-lg"
+                  onError={(e) => {
+                    // Fallback to gradient background if image fails
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-orange-400 to-yellow-500 hidden items-center justify-center">
+                  <Cloud className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
+                </div>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                 AWS Cloud Practitioner
@@ -121,8 +152,20 @@ const Certifications = () => {
               className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-3">
-                <Brain className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
+              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 flex items-center justify-center">
+                <img 
+                  src="/images/aws-certified-ai-practitioner (1) copy.png" 
+                  alt="AWS AI Practitioner Badge"
+                  className="w-full h-full object-contain rounded-lg shadow-lg"
+                  onError={(e) => {
+                    // Fallback to gradient background if image fails
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-500 to-pink-500 hidden items-center justify-center">
+                  <Brain className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
+                </div>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                 AWS AI Practitioner
