@@ -185,36 +185,6 @@ const Certifications = () => {
             </p>
           </div>
         </motion.div>
-
-        {/* Credly Badges Section - Alternative Display */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-8 sm:mt-12 text-center"
-        >
-          <h4 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-4 sm:mb-6">
-            Official Credly Badges
-          </h4>
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8">
-            {/* Credly Badge Embeds */}
-            <div 
-              data-iframe-width="150" 
-              data-iframe-height="270" 
-              data-share-badge-id="a94a6cf2-a484-4ca2-a39d-21dc530f2de5" 
-              data-share-badge-host="https://www.credly.com"
-              className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-3 sm:p-4"
-            ></div>
-            <div 
-              data-iframe-width="150" 
-              data-iframe-height="270" 
-              data-share-badge-id="cad5e674-60e1-4a51-8271-f762201653a4" 
-              data-share-badge-host="https://www.credly.com"
-              className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-3 sm:p-4"
-            ></div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
