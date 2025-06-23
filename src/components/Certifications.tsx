@@ -105,13 +105,14 @@ const Certifications = () => {
               className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
             >
-              <img 
-                src="/images/aws-certified-cloud-practitioner.png" 
-                alt="AWS Certified Cloud Practitioner Badge"
-                className="w-32 h-32 sm:w-40 sm:h-40 mx-auto object-contain"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 font-medium">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gradient-to-br from-orange-400 to-yellow-500 rounded-full flex items-center justify-center mb-3">
+                <Cloud className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                 AWS Cloud Practitioner
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                May 2024
               </p>
             </motion.div>
             
@@ -120,13 +121,14 @@ const Certifications = () => {
               className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
             >
-              <img 
-                src="/images/aws-certified-ai-practitioner (1).png" 
-                alt="AWS Certified AI Practitioner Badge"
-                className="w-32 h-32 sm:w-40 sm:h-40 mx-auto object-contain"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 font-medium">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-3">
+                <Brain className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                 AWS AI Practitioner
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                May 2024
               </p>
             </motion.div>
           </div>
@@ -138,6 +140,36 @@ const Certifications = () => {
                 View all badges on Credly →
               </a>
             </p>
+          </div>
+        </motion.div>
+
+        {/* Credly Badges Section - Alternative Display */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-8 sm:mt-12 text-center"
+        >
+          <h4 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-4 sm:mb-6">
+            Official Credly Badges
+          </h4>
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8">
+            {/* Credly Badge Embeds */}
+            <div 
+              data-iframe-width="150" 
+              data-iframe-height="270" 
+              data-share-badge-id="a94a6cf2-a484-4ca2-a39d-21dc530f2de5" 
+              data-share-badge-host="https://www.credly.com"
+              className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-3 sm:p-4"
+            ></div>
+            <div 
+              data-iframe-width="150" 
+              data-iframe-height="270" 
+              data-share-badge-id="cad5e674-60e1-4a51-8271-f762201653a4" 
+              data-share-badge-host="https://www.credly.com"
+              className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-3 sm:p-4"
+            ></div>
           </div>
         </motion.div>
       </div>
