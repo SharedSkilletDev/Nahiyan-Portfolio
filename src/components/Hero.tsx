@@ -45,13 +45,14 @@ const Hero = () => {
           </motion.p>
 
           <motion.p
-            className="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-relaxed px-4 max-w-3xl mx-auto"
+            className="text-base sm:text-lg text-gray-500 dark:text-gray-400 leading-relaxed px-4 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            Ph.D. candidate in Biomedical Informatics specializing in Healthcare AI, 
-            RAG architectures, and clinical decision support systems
+            Ph.D. in Biomedical Informatics with 4+ years of experience developing production ML systems. 
+            Expertise in AWS cloud services, healthcare AI, and large-scale distributed systems. 
+            16 publications with 155+ citations.
           </motion.p>
 
           <motion.div

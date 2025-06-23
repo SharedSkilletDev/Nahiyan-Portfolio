@@ -1,15 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Database, Code, Stethoscope, Award, Users } from 'lucide-react';
+import { Brain, Database, Code, Stethoscope, Award, Users, Cloud, Shield } from 'lucide-react';
 
 const About = () => {
   const skills = [
-    { icon: Brain, title: 'Machine Learning', description: 'Advanced ML algorithms, deep learning, and AI model development' },
-    { icon: Database, title: 'Data Science', description: 'Statistical analysis, predictive modeling, and data visualization' },
-    { icon: Code, title: 'Programming', description: 'Python, SQL, TensorFlow, PyTorch, React, and full-stack development' },
-    { icon: Stethoscope, title: 'Healthcare AI', description: 'Clinical decision support, medical image analysis, and EHR systems' },
-    { icon: Award, title: 'Research', description: '152+ citations, best paper awards, and published research' },
-    { icon: Users, title: 'Leadership', description: 'Team management, project leadership, and community involvement' }
+    { icon: Brain, title: 'Machine Learning & AI', description: 'TensorFlow, PyTorch, LLMs, RAG, Fine-tuning, NLP, Computer Vision, Deep Learning' },
+    { icon: Cloud, title: 'AWS Cloud Services', description: 'Bedrock, Lambda, S3, Athena, EC2, KMS, CloudTrail, API Gateway' },
+    { icon: Database, title: 'Data Science & MLOps', description: 'MLflow, DVC, Model Deployment, Distributed Systems, CI/CD, Docker' },
+    { icon: Code, title: 'Programming', description: 'Python, R, SQL, JavaScript with expertise in production ML systems' },
+    { icon: Stethoscope, title: 'Healthcare AI', description: 'Clinical Informatics, HIPAA Compliance, Clinical decision support, EHR systems' },
+    { icon: Shield, title: 'Research & Analytics', description: '16 publications, 155+ citations, Statistical Analysis, Predictive Modeling' }
   ];
 
   return (
@@ -25,10 +25,10 @@ const About = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
             About Me
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
-            I am a passionate Data Scientist and Machine Learning Engineer with over 4 years of experience 
-            in healthcare AI. Currently pursuing my Ph.D. in Biomedical Informatics at UAMS, I specialize 
-            in developing sophisticated AI-powered applications that tackle complex medical challenges.
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed px-4">
+            Data Scientist and ML Engineer with a Ph.D. in Biomedical Informatics and 4+ years of experience 
+            developing production ML systems. Expertise in AWS cloud services, healthcare AI, NLP, and large-scale 
+            distributed systems. My work has resulted in 16 publications and 155 citations to date.
           </p>
         </motion.div>
 
@@ -71,10 +71,10 @@ const About = () => {
               My Mission
             </h3>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              I'm dedicated to improving patient outcomes and enhancing operational efficiency within 
-              clinical settings through actionable, data-driven insights. My work focuses on leveraging 
-              large-scale healthcare data to build predictive models and clinical decision support tools 
-              that make a real difference in people's lives.
+              I have a proven track record of deploying ML models that improve patient outcomes and operational 
+              efficiency, with a strong background in clinical decision support and predictive analytics. My work 
+              is dedicated to leveraging large-scale healthcare data to build predictive models and clinical 
+              decision support tools that make a real difference in people's lives.
             </p>
           </div>
         </motion.div>

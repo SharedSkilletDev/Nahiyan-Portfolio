@@ -10,23 +10,23 @@ const Experience = () => {
       location: 'Little Rock, AR',
       period: 'June 2023 - Present',
       achievements: [
-        'Design and deploy ML-powered clinical decision support tools with AUC-ROC: 0.76, F1-score: 0.88',
-        'Engineer predictive models using Gradient Boosting on large VHA datasets for opioid misuse prediction',
-        'Collaborate with clinical teams to develop capacity forecasting models for workforce optimization',
-        'Evaluate telehealth impact on OUD outcomes using Epic Cosmos data from ~180k patients'
+        'Improved the identification of high-risk veterans from a 50% baseline to an F1-score of 0.88 (AUC-ROC 0.76) by engineering a Gradient Boosting model with Python',
+        'Deployed clinical decision support dashboards in Power BI for real-time patient risk stratification',
+        'Demonstrated improved outcomes for telehealth-based OUD care through regression analysis on ~180,000 patients, linking it to fewer ER visits and increased medication receipt',
+        'Collaborate with clinical, operational, and HR teams to develop capacity forecasting models for workforce optimization'
       ],
       color: 'from-blue-500 to-cyan-500'
     },
     {
-      title: 'Data Scientist & Research Assistant',
-      company: 'COSMOS Research Center, UALR',
+      title: 'Data Scientist',
+      company: 'COSMOS, University of Arkansas at Little Rock',
       location: 'Little Rock, AR',
-      period: 'Aug 2021 - May 2023',
+      period: 'August 2021 - May 2023',
       achievements: [
-        'Developed NLP-based toxicity classification model with 83% accuracy for content moderation',
-        'Mined and analyzed over 2 million Reddit posts using Pushshift API',
-        'Presented findings at international conferences on online toxicity and community dynamics',
-        'Published research on social media toxicity with significant academic impact'
+        'Improved real-time content moderation capabilities by developing a Python-based NLP toxicity model that correctly identified toxic content with 83% accuracy',
+        'Generated novel insights into online toxicity by conducting an end-to-end analysis of more than 2 million Reddit posts',
+        'Revealed actionable patterns and sentiment shifts in online community dynamics',
+        'Presented findings at international conferences on social media toxicity and behavioral analysis'
       ],
       color: 'from-purple-500 to-pink-500'
     },
@@ -34,12 +34,12 @@ const Experience = () => {
       title: 'Electrical Data Analyst',
       company: 'Renata Limited',
       location: 'Bangladesh',
-      period: 'Nov 2019 - July 2021',
+      period: 'November 2019 - July 2021',
       achievements: [
-        'Led predictive maintenance projects resulting in 20% reduction in equipment downtime',
-        'Supervised team of 30+ engineers to optimize HVAC systems',
-        'Boosted energy efficiency and reduced operational costs through data-driven insights',
-        'Implemented IoT solutions for real-time equipment monitoring'
+        'Spearheaded a predictive maintenance program that leveraged machine learning on equipment sensor data',
+        'Successfully reduced machinery downtime by 20% and generated over $20,000 in annual cost savings',
+        'Directed a team of over 30 engineers to optimize large-scale HVAC systems',
+        'Led the collection and analysis of sensor data to implement data-driven efficiency improvements'
       ],
       color: 'from-green-500 to-teal-500'
     }
@@ -59,8 +59,8 @@ const Experience = () => {
             Professional Experience
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-            Over 4 years of experience applying data science and machine learning 
-            in diverse and challenging environments
+            4+ years of experience developing production ML systems in healthcare AI, 
+            NLP, and large-scale distributed systems
           </p>
         </motion.div>
 

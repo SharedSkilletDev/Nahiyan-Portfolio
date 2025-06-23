@@ -1,14 +1,32 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Brain, Search, Heart, TrendingUp, MessageSquare, Activity } from 'lucide-react';
+import { ExternalLink, Github, Brain, Search, Heart, TrendingUp, MessageSquare, Activity, Microscope, BarChart3 } from 'lucide-react';
 
 const Projects = () => {
   const projects = [
     {
+      title: 'Clinical Summarization System & AI Research Tools',
+      description: 'HIPAA-compliant, serverless NLP pipeline on AWS (Bedrock, Lambda, S3) to automate summarization of complex clinical notes from MIMIC-IV dataset using RAG architecture with LLaMA-7B.',
+      icon: Microscope,
+      tech: ['AWS Bedrock', 'Lambda', 'S3', 'RAG', 'LLaMA-7B', 'HIPAA Compliance'],
+      color: 'from-emerald-500 to-teal-500',
+      github: '#',
+      demo: '#'
+    },
+    {
+      title: 'Comparative Analysis of SOTA Vision Models',
+      description: 'Created novel dataset (BanglaFood-45) and benchmarked ViT, CLIP, and Large Multi-modal Models (GPT-4o, LLaVA) across zero-shot, fine-tuning, and LoRA paradigms for culturally-specific data.',
+      icon: Brain,
+      tech: ['ViT', 'CLIP', 'GPT-4o', 'LLaVA', 'LoRA', 'Computer Vision'],
+      color: 'from-purple-500 to-pink-500',
+      github: '#',
+      demo: '#'
+    },
+    {
       title: 'PubMedSearch - Medical Research Assistant',
-      description: 'AI-powered research assistant built with Python and Streamlit that helps medical professionals efficiently search, analyze, and query PubMed literature using the OpenAI API.',
+      description: 'AI-powered research assistant built with Python and Streamlit that helps medical professionals efficiently search, analyze, and query PubMed literature using advanced NLP techniques.',
       icon: Search,
-      tech: ['Python', 'Streamlit', 'OpenAI API', 'NLP'],
+      tech: ['Python', 'Streamlit', 'OpenAI API', 'NLP', 'Medical Research'],
       color: 'from-blue-500 to-cyan-500',
       github: '#',
       demo: '#'
@@ -17,44 +35,53 @@ const Projects = () => {
       title: 'USMLE Step 1 Assistant',
       description: 'A sophisticated medical education tool leveraging a RAG architecture with long-term memory to provide context-aware answers to complex medical questions.',
       icon: Brain,
-      tech: ['RAG', 'LLM', 'Medical Education', 'AI'],
-      color: 'from-purple-500 to-pink-500',
+      tech: ['RAG', 'LLM', 'Medical Education', 'Context-Aware AI'],
+      color: 'from-indigo-500 to-purple-500',
       github: '#',
       demo: '#'
     },
     {
-      title: 'Predicting Dropout from MOUD',
-      description: 'A project focused on predicting patient dropout from Medication for Opioid Use Disorder, demonstrating skills in healthcare predictive analytics.',
-      icon: Heart,
-      tech: ['Machine Learning', 'Healthcare', 'Predictive Analytics'],
+      title: 'Chest Disease Classification Pipeline',
+      description: 'End-to-end ML pipeline for classifying chest diseases from CT scan images using TensorFlow, MLflow for experiment tracking, and DVC for version control.',
+      icon: Activity,
+      tech: ['TensorFlow', 'MLflow', 'DVC', 'Computer Vision', 'Medical Imaging'],
       color: 'from-red-500 to-orange-500',
       github: '#',
       demo: '#'
     },
     {
-      title: 'Anemia Detection from Eye Images',
-      description: 'Using machine learning to detect anemia from conjunctiva images, showcasing expertise in computer vision and medical image analysis.',
-      icon: Activity,
-      tech: ['Computer Vision', 'Medical Imaging', 'Deep Learning'],
-      color: 'from-green-500 to-teal-500',
+      title: 'Predicting Dropout from MOUD',
+      description: 'Healthcare predictive analytics project focused on predicting patient dropout from Medication for Opioid Use Disorder using advanced machine learning techniques.',
+      icon: Heart,
+      tech: ['Machine Learning', 'Healthcare Analytics', 'Predictive Modeling', 'Clinical Data'],
+      color: 'from-pink-500 to-rose-500',
       github: '#',
       demo: '#'
     },
     {
       title: 'Stock Market Analyzer & Reporter',
-      description: 'A comprehensive Streamlit web app that integrates financial data APIs and LLMs to provide technical analysis, sentiment analysis, and SWOT reports.',
+      description: 'Comprehensive Streamlit web app that integrates financial data APIs and LLMs to provide technical analysis, sentiment analysis, SWOT reports, and voice-generated summaries.',
       icon: TrendingUp,
-      tech: ['Financial Analysis', 'LLM', 'API Integration', 'Streamlit'],
+      tech: ['Financial Analysis', 'LLM', 'API Integration', 'Streamlit', 'Voice Synthesis'],
       color: 'from-yellow-500 to-orange-500',
       github: '#',
       demo: '#'
     },
     {
       title: 'ResearchBuddy AI',
-      description: 'A versatile, multi-model AI chatbot that integrates with OpenAI, Gemini, and Llama APIs and supports analysis of various document formats.',
+      description: 'Versatile, multi-model AI chatbot that integrates with OpenAI, Gemini, and Llama APIs and supports analysis of various document formats (PDF, TXT, CSV).',
       icon: MessageSquare,
       tech: ['Multi-model AI', 'Document Analysis', 'Chatbot', 'API Integration'],
-      color: 'from-indigo-500 to-purple-500',
+      color: 'from-violet-500 to-purple-500',
+      github: '#',
+      demo: '#'
+    },
+    {
+      title: 'Anemia Detection from Eye Images',
+      description: 'Computer vision project using machine learning to detect anemia from conjunctiva images, showcasing expertise in medical image analysis and diagnostic AI.',
+      icon: BarChart3,
+      tech: ['Computer Vision', 'Medical Imaging', 'Deep Learning', 'Diagnostic AI'],
+      color: 'from-green-500 to-teal-500',
       github: '#',
       demo: '#'
     }
@@ -74,7 +101,8 @@ const Projects = () => {
             Featured Projects
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-            A showcase of AI/ML projects highlighting technical skills and passion for building practical solutions
+            A showcase of production ML systems, healthcare AI applications, and research projects 
+            demonstrating expertise in AWS cloud services and large-scale distributed systems
           </p>
         </motion.div>
 

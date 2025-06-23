@@ -52,8 +52,8 @@ const Publications = () => {
   ];
 
   const stats = [
-    { label: 'Total Citations', value: '152+', icon: Quote },
-    { label: 'Publications', value: '15+', icon: BookOpen },
+    { label: 'Total Citations', value: '155+', icon: Quote },
+    { label: 'Publications', value: '16+', icon: BookOpen },
     { label: 'Best Paper Awards', value: '1', icon: Award }
   ];
 
@@ -71,7 +71,7 @@ const Publications = () => {
             Publications & Research
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-            Active contributor to the scientific community with significant research impact
+            Active contributor to the scientific community with significant research impact in healthcare AI and machine learning
           </p>
         </motion.div>
 

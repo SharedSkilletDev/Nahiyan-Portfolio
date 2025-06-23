@@ -5,17 +5,9 @@ import { Award, Shield, Cloud, Brain } from 'lucide-react';
 const Certifications = () => {
   const certifications = [
     {
-      title: 'EPIC COSMOS Data Model',
-      issuer: 'Epic Systems',
-      description: 'Specialized certification in Epic Cosmos healthcare data model and analytics',
-      icon: Shield,
-      color: 'from-blue-500 to-cyan-500',
-      year: '2023'
-    },
-    {
-      title: 'AWS Certified Cloud Practitioner',
+      title: 'AWS Cloud Practitioner',
       issuer: 'Amazon Web Services',
-      description: 'Foundational understanding of AWS cloud services and architecture',
+      description: 'Foundational understanding of AWS cloud services and architecture including EC2, S3, Lambda, and core security practices',
       icon: Cloud,
       color: 'from-orange-500 to-yellow-500',
       year: '2023'
@@ -23,10 +15,18 @@ const Certifications = () => {
     {
       title: 'AWS AI Practitioner',
       issuer: 'Amazon Web Services',
-      description: 'Expertise in AWS AI and machine learning services and best practices',
+      description: 'Expertise in AWS AI and machine learning services including Bedrock, SageMaker, and best practices for ML deployment',
       icon: Brain,
       color: 'from-purple-500 to-pink-500',
       year: '2024'
+    },
+    {
+      title: 'EPIC COSMOS Data Model',
+      issuer: 'Epic Systems',
+      description: 'Specialized certification in Epic Cosmos healthcare data model and analytics for clinical research and population health',
+      icon: Shield,
+      color: 'from-blue-500 to-cyan-500',
+      year: '2023'
     }
   ];
 
@@ -44,7 +44,7 @@ const Certifications = () => {
             Certifications
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-            Professional certifications demonstrating expertise in cloud computing, healthcare data, and AI technologies
+            Professional certifications demonstrating expertise in AWS cloud services, healthcare data, and AI technologies
           </p>
         </motion.div>
 
