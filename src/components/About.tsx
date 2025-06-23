@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Database, Code, Stethoscope, Award, Users, Cloud, Shield } from 'lucide-react';
+import { Brain, Database, Code, Stethoscope, Award, Users, Cloud, Shield, Zap, ExternalLink } from 'lucide-react';
 
 const About = () => {
   const skills = [
@@ -70,12 +70,44 @@ const About = () => {
             <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white">
               My Mission
             </h3>
-            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mb-6">
               I have a proven track record of deploying ML models that improve patient outcomes and operational 
               efficiency, with a strong background in clinical decision support and predictive analytics. My work 
               is dedicated to leveraging large-scale healthcare data to build predictive models and clinical 
               decision support tools that make a real difference in people's lives.
             </p>
+            
+            {/* Enhanced AI Assistant CTA */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-xl p-4 sm:p-6 border border-emerald-500/30"
+            >
+              <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0 sm:space-x-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="text-lg font-bold text-emerald-700 dark:text-emerald-300 mb-1">
+                    🤖 Ask Me Anything!
+                  </h4>
+                  <p className="text-sm text-emerald-600 dark:text-emerald-400">
+                    Try my Enhanced AI Assistant with RAG capabilities for detailed answers about my work and experience
+                  </p>
+                </div>
+                <motion.a
+                  href="https://askme-about-nahiyan.streamlit.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base font-semibold flex items-center space-x-2 whitespace-nowrap"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Zap className="w-4 h-4" />
+                  <span>Try Enhanced AI</span>
+                  <ExternalLink className="w-4 h-4" />
+                </motion.a>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>

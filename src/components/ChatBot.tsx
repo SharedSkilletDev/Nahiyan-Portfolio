@@ -16,7 +16,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Nahiyan's AI assistant. I can answer questions about his background, experience, research, and projects. For the most detailed responses, you can also visit the enhanced AI assistant. What would you like to know?",
+      text: "Hi! I'm Nahiyan's AI assistant. I can answer questions about his background, experience, research, and projects. For the most comprehensive responses with advanced RAG capabilities, try the Enhanced AI Assistant! What would you like to know?",
       isUser: false,
       timestamp: new Date()
     }
@@ -207,6 +207,23 @@ const ChatBot = () => {
 
   return (
     <>
+      {/* Enhanced AI Assistant Button - Always Visible */}
+      <motion.a
+        href="https://askme-about-nahiyan.streamlit.app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base font-semibold flex items-center space-x-2 hover:scale-105"
+        initial={{ scale: 0, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span>Enhanced AI</span>
+        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+      </motion.a>
+
       {/* Chat Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
@@ -259,10 +276,10 @@ const ChatBot = () => {
                   href="https://askme-about-nahiyan.streamlit.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200 text-blue-500 hover:text-blue-400"
+                  className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200 text-emerald-500 hover:text-emerald-400"
                   title="Open Enhanced AI Assistant"
                 >
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
                 </a>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -289,24 +306,26 @@ const ChatBot = () => {
               </div>
             )}
 
-            {/* Connection Status Banner */}
-            {connectionStatus === 'enhanced' && (
-              <div className="px-3 sm:px-4 py-2 bg-green-500/20 border-b border-green-500/30">
-                <p className="text-xs text-green-700 dark:text-green-300 flex items-center space-x-1">
+            {/* Enhanced AI Promotion Banner */}
+            <div className="px-3 sm:px-4 py-2 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-b border-emerald-500/30">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-emerald-700 dark:text-emerald-300 flex items-center space-x-1">
                   <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
-                  <span>Enhanced RAG AI is available! </span>
-                  <a 
-                    href="https://askme-about-nahiyan.streamlit.app" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="underline hover:no-underline"
-                  >
-                    Visit here
-                  </a>
+                  <span>Try Enhanced AI with RAG!</span>
                 </p>
+                <a 
+                  href="https://askme-about-nahiyan.streamlit.app" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 font-semibold flex items-center space-x-1"
+                >
+                  <span>Open</span>
+                  <ExternalLink className="w-2 h-2 sm:w-3 sm:h-3" />
+                </a>
               </div>
-            )}
+            </div>
 
+            {/* Connection Status Banner */}
             {connectionStatus === 'basic' && !isWakingUp && (
               <div className="px-3 sm:px-4 py-2 bg-orange-500/20 border-b border-orange-500/30">
                 <p className="text-xs text-orange-700 dark:text-orange-300 flex items-center space-x-1">
