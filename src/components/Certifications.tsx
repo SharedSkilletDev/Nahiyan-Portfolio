@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, Shield, Cloud, Brain } from 'lucide-react';
 
@@ -29,22 +29,6 @@ const Certifications = () => {
       year: 'October 2023'
     }
   ];
-
-  // Ensure Credly script loads and processes badges
-  useEffect(() => {
-    const loadCredlyBadges = () => {
-      // Check if Credly script is loaded
-      if (window.CrBadge) {
-        window.CrBadge.initialize();
-      } else {
-        // If script isn't loaded yet, try again after a short delay
-        setTimeout(loadCredlyBadges, 1000);
-      }
-    };
-
-    // Load badges after component mounts
-    setTimeout(loadCredlyBadges, 500);
-  }, []);
 
   return (
     <section id="certifications" className="py-12 sm:py-16 lg:py-20 bg-gray-50/50 dark:bg-dark-800/50">
@@ -104,7 +88,7 @@ const Certifications = () => {
           ))}
         </div>
 
-        {/* Credly Badges Section */}
+        {/* AWS Digital Badges Section */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -117,31 +101,41 @@ const Certifications = () => {
           </h3>
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-6 sm:space-y-0 sm:space-x-8">
             {/* AWS Cloud Practitioner Badge */}
-            <div className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50">
-              <div 
-                data-iframe-width="150" 
-                data-iframe-height="270" 
-                data-share-badge-id="a94a6cf2-a484-4ca2-a39d-21dc530f2de5" 
-                data-share-badge-host="https://www.credly.com"
-              ></div>
-            </div>
+            <motion.div 
+              className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              <img 
+                src="/images/aws-certified-cloud-practitioner.png" 
+                alt="AWS Certified Cloud Practitioner Badge"
+                className="w-32 h-32 sm:w-40 sm:h-40 mx-auto object-contain"
+              />
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 font-medium">
+                AWS Cloud Practitioner
+              </p>
+            </motion.div>
             
             {/* AWS AI Practitioner Badge */}
-            <div className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50">
-              <div 
-                data-iframe-width="150" 
-                data-iframe-height="270" 
-                data-share-badge-id="cad5e674-60e1-4a51-8271-f762201653a4" 
-                data-share-badge-host="https://www.credly.com"
-              ></div>
-            </div>
+            <motion.div 
+              className="bg-white/10 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              <img 
+                src="/images/aws-certified-ai-practitioner (1).png" 
+                alt="AWS Certified AI Practitioner Badge"
+                className="w-32 h-32 sm:w-40 sm:h-40 mx-auto object-contain"
+              />
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 font-medium">
+                AWS AI Practitioner
+              </p>
+            </motion.div>
           </div>
           
-          {/* Fallback message if badges don't load */}
+          {/* Additional info */}
           <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
-            <p>Digital badges are loading... If they don't appear, you can view them directly on 
+            <p>These digital badges verify my expertise in AWS cloud services and AI technologies. 
               <a href="https://www.credly.com/users/nahiyan-bin-noor" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 ml-1">
-                Credly
+                View all badges on Credly →
               </a>
             </p>
           </div>
