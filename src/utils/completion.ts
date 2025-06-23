@@ -1,46 +1,33 @@
-import axios from 'axios';
-
-const EURI_API_BASE = 'https://api.euri.ai/v1';
-
 export async function generateCompletion(prompt: string): Promise<string> {
-  const apiKey = import.meta.env.VITE_EURI_API_KEY;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   
-  if (!apiKey) {
-    throw new Error('EURI API key not found. Please set VITE_EURI_API_KEY in your environment variables.');
+  if (!supabaseUrl) {
+    throw new Error('Supabase URL not found. Please set VITE_SUPABASE_URL in your environment variables.');
   }
 
   try {
-    const response = await axios.post(
-      `${EURI_API_BASE}/chat/completions`,
-      {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 500,
-        temperature: 0.7
+    const response = await fetch(`${supabaseUrl}/functions/v1/euri-completion`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+      body: JSON.stringify({ prompt }),
+    });
 
-    if (response.data?.choices?.[0]?.message?.content) {
-      return response.data.choices[0].message.content.trim();
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+      throw new Error(`Failed to generate completion: ${errorData.error || response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (data?.content) {
+      return data.content;
     } else {
       throw new Error('Invalid response format from completion API');
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Completion API error:', error.response?.data || error.message);
-      throw new Error(`Failed to generate completion: ${error.response?.data?.error?.message || error.message}`);
-    }
+    console.error('Completion API error:', error);
     throw error;
   }
 }
