@@ -33,9 +33,19 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-gradient p-1">
                 <div className="bg-white dark:bg-dark-900 rounded-full p-2">
                   <img
-                    src="images/im copy.png"
+                    src="/images/im%20copy.png"
                     alt="Nahiyan Bin Noor"
                     className="w-80 h-80 rounded-full object-cover shadow-2xl"
+                    onError={(e) => {
+                      console.error('Image failed to load:', e.currentTarget.src);
+                      // Try alternative paths
+                      const img = e.currentTarget;
+                      if (img.src.includes('%20')) {
+                        img.src = '/images/im copy.png';
+                      } else if (img.src.includes('im copy')) {
+                        img.src = '/images/im.png';
+                      }
+                    }}
                   />
                 </div>
               </div>
