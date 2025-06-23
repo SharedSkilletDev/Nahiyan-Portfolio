@@ -33,7 +33,7 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-gradient p-1">
                 <div className="bg-white dark:bg-dark-900 rounded-full p-2">
                   <img
-                    src="/images/im copy.png"
+                    src="images/im copy.png"
                     alt="Nahiyan Bin Noor"
                     className="w-80 h-80 rounded-full object-cover shadow-2xl"
                   />
