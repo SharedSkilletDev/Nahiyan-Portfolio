@@ -12,7 +12,7 @@ export async function createEmbedding(text: string): Promise<number[]> {
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 12000); // Increased timeout to 12 seconds
 
     const response = await fetch(`${supabaseUrl}/functions/v1/euri-embedding`, {
       method: 'POST',
@@ -30,7 +30,14 @@ export async function createEmbedding(text: string): Promise<number[]> {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
       console.error('Embedding API detailed error:', errorData);
       
-      // Provide more detailed error information
+      // Check if this is a service unavailable error that should trigger fallback
+      if (response.status === 503 || errorData.fallback) {
+        const fallbackError = new Error(`Embedding service unavailable: ${errorData.error || response.statusText}`);
+        (fallbackError as any).shouldFallback = true;
+        throw fallbackError;
+      }
+      
+      // For other errors, provide detailed information
       const errorMessage = errorData.debug || errorData.error || response.statusText;
       throw new Error(`Failed to create embedding (${response.status}): ${errorMessage}`);
     }
@@ -41,14 +48,32 @@ export async function createEmbedding(text: string): Promise<number[]> {
       return data.embedding;
     } else {
       console.error('Invalid embedding response:', data);
-      throw new Error('Invalid response format from embedding API');
+      const invalidResponseError = new Error('Invalid response format from embedding API');
+      (invalidResponseError as any).shouldFallback = true;
+      throw invalidResponseError;
     }
   } catch (error) {
     if (error.name === 'AbortError') {
       console.error('Embedding API request timed out');
-      throw new Error('Request timed out');
+      const timeoutError = new Error('Embedding request timed out');
+      (timeoutError as any).shouldFallback = true;
+      throw timeoutError;
     }
+    
+    // Re-throw with fallback flag if it's already set
+    if ((error as any).shouldFallback) {
+      throw error;
+    }
+    
     console.error('Embedding API error:', error);
+    
+    // For network errors or connection issues, suggest fallback
+    if (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('connection')) {
+      const networkError = new Error(`Network error: ${error.message}`);
+      (networkError as any).shouldFallback = true;
+      throw networkError;
+    }
+    
     throw error;
   }
 }

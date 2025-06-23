@@ -107,9 +107,12 @@ GitHub: https://github.com/Nahiyan140212
 let knowledgeChunks: Array<{ text: string; embedding?: number[] }> = [];
 let isInitialized = false;
 let useFullRAG = false; // Flag to determine if full RAG is available
+let initializationAttempted = false;
 
 async function initializeKnowledgeBase() {
-  if (isInitialized) return;
+  if (isInitialized || initializationAttempted) return;
+  
+  initializationAttempted = true;
   
   try {
     console.log('Initializing knowledge base...');
@@ -118,41 +121,75 @@ async function initializeKnowledgeBase() {
     const chunks = chunkText(KNOWLEDGE_BASE, 500, 50);
     console.log(`Created ${chunks.length} text chunks`);
     
-    // Try to create embeddings for each chunk
+    // Initialize chunks without embeddings first (fallback mode)
+    knowledgeChunks = chunks.map(text => ({ text }));
+    
+    // Try to create embeddings for each chunk with better error handling
     const embeddingPromises = chunks.map(async (chunk, index) => {
       try {
         const embedding = await createEmbedding(chunk);
         console.log(`Created embedding for chunk ${index + 1}/${chunks.length}`);
         return { text: chunk, embedding };
       } catch (error) {
+        // Check if this error suggests we should fall back
+        if ((error as any).shouldFallback) {
+          console.warn(`Embedding service unavailable for chunk ${index + 1}, using fallback mode`);
+          throw error; // Propagate to trigger fallback
+        }
         console.warn(`Failed to create embedding for chunk ${index + 1}:`, error.message);
         return { text: chunk };
       }
     });
     
-    // Wait for all embeddings with a timeout
+    // Wait for embeddings with a reasonable timeout
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Embedding timeout')), 10000)
+      setTimeout(() => reject(new Error('Embedding initialization timeout')), 15000)
     );
     
     try {
-      knowledgeChunks = await Promise.race([
-        Promise.all(embeddingPromises),
+      const results = await Promise.race([
+        Promise.allSettled(embeddingPromises),
         timeoutPromise
-      ]) as Array<{ text: string; embedding?: number[] }>;
+      ]) as PromiseSettledResult<{ text: string; embedding?: number[] }>[];
       
-      // Check if we have any successful embeddings
-      const successfulEmbeddings = knowledgeChunks.filter(chunk => chunk.embedding).length;
+      // Process results and check for successful embeddings
+      const processedChunks: Array<{ text: string; embedding?: number[] }> = [];
+      let successfulEmbeddings = 0;
+      let shouldFallback = false;
       
-      if (successfulEmbeddings > 0) {
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        if (result.status === 'fulfilled') {
+          processedChunks.push(result.value);
+          if (result.value.embedding) {
+            successfulEmbeddings++;
+          }
+        } else {
+          // Check if any rejection suggests we should use fallback mode
+          if ((result.reason as any)?.shouldFallback) {
+            shouldFallback = true;
+          }
+          processedChunks.push({ text: chunks[i] });
+        }
+      }
+      
+      knowledgeChunks = processedChunks;
+      
+      // Determine if we should use full RAG or fallback
+      if (shouldFallback || successfulEmbeddings === 0) {
+        useFullRAG = false;
+        console.log('Embedding service unavailable - using fallback mode');
+      } else if (successfulEmbeddings >= Math.floor(chunks.length * 0.5)) {
+        // Use full RAG if we have at least 50% successful embeddings
         useFullRAG = true;
         console.log(`Knowledge base initialized with ${successfulEmbeddings}/${chunks.length} embeddings - Full RAG enabled`);
       } else {
-        throw new Error('No embeddings created successfully');
+        useFullRAG = false;
+        console.log(`Only ${successfulEmbeddings}/${chunks.length} embeddings created - using fallback mode`);
       }
+      
     } catch (error) {
-      console.warn('Embedding creation failed or timed out, falling back to text-only chunks:', error.message);
-      knowledgeChunks = chunks.map(text => ({ text }));
+      console.warn('Embedding creation failed or timed out, using fallback mode:', error.message);
       useFullRAG = false;
     }
     
@@ -160,8 +197,10 @@ async function initializeKnowledgeBase() {
     console.log(`Knowledge base initialization complete. Full RAG: ${useFullRAG}`);
   } catch (error) {
     console.error('Failed to initialize knowledge base:', error);
-    // Fallback: use chunks without embeddings
-    knowledgeChunks = chunkText(KNOWLEDGE_BASE, 500, 50).map(text => ({ text }));
+    // Ensure we have fallback chunks
+    if (knowledgeChunks.length === 0) {
+      knowledgeChunks = chunkText(KNOWLEDGE_BASE, 500, 50).map(text => ({ text }));
+    }
     useFullRAG = false;
     isInitialized = true;
     console.log('Knowledge base initialized in fallback mode');
@@ -199,7 +238,11 @@ async function performFullRAG(query: string): Promise<string> {
       console.log('Query embedding created successfully');
     } catch (error) {
       console.warn('Failed to create query embedding:', error.message);
-      // Fall back to text-based search
+      // If embedding fails, fall back to text-based search
+      if ((error as any).shouldFallback) {
+        console.log('Embedding service unavailable, switching to fallback mode');
+        return findBestResponse(query);
+      }
     }
     
     // Find relevant chunks

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import { ragQuery } from '../utils/ragSystem';
 
 interface Message {
@@ -23,7 +23,7 @@ const ChatBot = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'fallback'>('checking');
+  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'fallback' | 'error'>('checking');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -44,10 +44,16 @@ const ChatBot = () => {
   const checkConnectionStatus = async () => {
     try {
       // Try a simple test query to check if the full RAG system is working
-      await ragQuery('test connection');
-      setConnectionStatus('connected');
+      const response = await ragQuery('test connection');
+      
+      // Check if the response indicates fallback mode
+      if (response.includes('I apologize') || response.includes('limited')) {
+        setConnectionStatus('fallback');
+      } else {
+        setConnectionStatus('connected');
+      }
     } catch (error) {
-      console.log('Full RAG system unavailable, using fallback mode');
+      console.log('RAG system check failed:', error);
       setConnectionStatus('fallback');
     }
   };
@@ -77,18 +83,28 @@ const ChatBot = () => {
       };
 
       setMessages(prev => [...prev, botMessage]);
+      
+      // Update connection status based on response quality
+      if (connectionStatus === 'checking') {
+        if (response.includes('I apologize') || response.includes('limited')) {
+          setConnectionStatus('fallback');
+        } else {
+          setConnectionStatus('connected');
+        }
+      }
     } catch (error) {
       console.error('Chat error:', error);
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I apologize, but I'm having trouble processing your request right now. Please try asking your question in a different way, or contact Nahiyan directly at nahiyan.cuet@gmail.com.",
+        text: "I apologize, but I'm having trouble processing your request right now. The AI assistant is running in limited mode. Please try asking your question in a different way, or contact Nahiyan directly at nahiyan.cuet@gmail.com.",
         isUser: false,
         timestamp: new Date(),
         isError: true
       };
 
       setMessages(prev => [...prev, errorMessage]);
+      setConnectionStatus('fallback');
     } finally {
       setIsLoading(false);
     }
@@ -106,9 +122,11 @@ const ChatBot = () => {
       case 'checking':
         return <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin text-yellow-500" />;
       case 'connected':
-        return <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full" />;
+        return <Wifi className="w-2 h-2 sm:w-3 sm:h-3 text-green-500" />;
       case 'fallback':
-        return <AlertCircle className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" />;
+        return <WifiOff className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" />;
+      case 'error':
+        return <AlertCircle className="w-2 h-2 sm:w-3 sm:h-3 text-red-500" />;
       default:
         return null;
     }
@@ -119,11 +137,28 @@ const ChatBot = () => {
       case 'checking':
         return 'Connecting...';
       case 'connected':
-        return 'AI Assistant (Full Mode)';
+        return 'AI Assistant (Enhanced Mode)';
       case 'fallback':
-        return 'AI Assistant (Offline Mode)';
+        return 'AI Assistant (Basic Mode)';
+      case 'error':
+        return 'AI Assistant (Limited)';
       default:
         return 'AI Assistant';
+    }
+  };
+
+  const getStatusDescription = () => {
+    switch (connectionStatus) {
+      case 'checking':
+        return 'Initializing AI capabilities...';
+      case 'connected':
+        return 'Full AI features available';
+      case 'fallback':
+        return 'Basic responses available';
+      case 'error':
+        return 'Limited functionality';
+      default:
+        return 'Ask me about Nahiyan';
     }
   };
 
@@ -164,7 +199,7 @@ const ChatBot = () => {
                     </h3>
                     {getStatusIndicator()}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Ask me about Nahiyan</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{getStatusDescription()}</p>
                 </div>
               </div>
               <button
@@ -179,8 +214,17 @@ const ChatBot = () => {
             {connectionStatus === 'fallback' && (
               <div className="px-3 sm:px-4 py-2 bg-orange-500/20 border-b border-orange-500/30">
                 <p className="text-xs text-orange-700 dark:text-orange-300 flex items-center space-x-1">
+                  <WifiOff className="w-2 h-2 sm:w-3 sm:h-3" />
+                  <span>Running in basic mode - enhanced AI features unavailable</span>
+                </p>
+              </div>
+            )}
+
+            {connectionStatus === 'error' && (
+              <div className="px-3 sm:px-4 py-2 bg-red-500/20 border-b border-red-500/30">
+                <p className="text-xs text-red-700 dark:text-red-300 flex items-center space-x-1">
                   <AlertCircle className="w-2 h-2 sm:w-3 sm:h-3" />
-                  <span>Running in offline mode - responses may be limited</span>
+                  <span>AI services temporarily unavailable</span>
                 </p>
               </div>
             )}
