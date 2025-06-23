@@ -49,11 +49,12 @@ const ChatBot = () => {
         const status = await checkStreamlitStatus();
         if (status === 'available') {
           setConnectionStatus('enhanced');
+          setIsWakingUp(false);
           
           // Add a system message about enhanced mode being available
           const systemMessage: Message = {
             id: Date.now().toString(),
-            text: "🎉 Enhanced AI mode is now active! The full AI assistant is available at https://askme-about-nahiyan.streamlit.app for the most comprehensive responses.",
+            text: "🎉 Enhanced AI mode is now active! The full AI assistant with RAG capabilities is available at https://askme-about-nahiyan.streamlit.app for the most comprehensive responses.",
             isUser: false,
             timestamp: new Date()
           };
@@ -72,6 +73,7 @@ const ChatBot = () => {
       
       if (status === 'available') {
         setConnectionStatus('enhanced');
+        setIsWakingUp(false);
       } else if (status === 'sleeping') {
         setConnectionStatus('basic');
         setIsWakingUp(true);
@@ -80,10 +82,12 @@ const ChatBot = () => {
         setTimeout(() => setIsWakingUp(false), 30000); // Stop showing "waking" after 30 seconds
       } else {
         setConnectionStatus('basic');
+        setIsWakingUp(false);
       }
     } catch (error) {
       console.log('Connection status check failed:', error);
       setConnectionStatus('basic');
+      setIsWakingUp(false);
     }
   };
 
@@ -115,10 +119,11 @@ const ChatBot = () => {
       
       // Update connection status based on response
       if (connectionStatus === 'checking') {
-        if (response.includes('basic mode') || response.includes('starting up')) {
-          setConnectionStatus('basic');
-        } else if (response.includes('enhanced AI assistant is available')) {
+        if (response.includes('enhanced AI assistant is available')) {
           setConnectionStatus('enhanced');
+          setIsWakingUp(false);
+        } else if (response.includes('basic mode') || response.includes('starting up')) {
+          setConnectionStatus('basic');
         } else {
           setConnectionStatus('basic');
         }
@@ -187,7 +192,7 @@ const ChatBot = () => {
       case 'checking':
         return 'Initializing AI capabilities...';
       case 'enhanced':
-        return 'Enhanced AI available at streamlit app';
+        return 'Enhanced RAG AI available';
       case 'basic':
         return isWakingUp ? 'Enhanced mode starting up...' : 'Basic responses available';
       case 'waking':
@@ -264,7 +269,7 @@ const ChatBot = () => {
               <div className="px-3 sm:px-4 py-2 bg-green-500/20 border-b border-green-500/30">
                 <p className="text-xs text-green-700 dark:text-green-300 flex items-center space-x-1">
                   <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
-                  <span>Enhanced AI is available! </span>
+                  <span>Enhanced RAG AI is available! </span>
                   <a 
                     href="https://askme-about-nahiyan.streamlit.app" 
                     target="_blank" 
@@ -290,7 +295,7 @@ const ChatBot = () => {
               <div className="px-3 sm:px-4 py-2 bg-blue-500/20 border-b border-blue-500/30">
                 <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center space-x-1">
                   <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin" />
-                  <span>Enhanced AI mode is waking up...</span>
+                  <span>Enhanced RAG AI mode is waking up...</span>
                 </p>
               </div>
             )}

@@ -9,42 +9,65 @@ export async function queryStreamlitChatbot(message: string): Promise<StreamlitR
   try {
     console.log('Attempting to query Streamlit chatbot:', message);
     
-    // Since Streamlit doesn't have built-in API endpoints, we'll try a different approach
-    // Option 1: Check if the app is accessible at all
+    // First, try the chat API endpoint
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
     
-    // Try to access the main Streamlit app
-    const response = await fetch(STREAMLIT_URL, {
+    // Construct the API URL with query parameters as your Streamlit app expects
+    const apiUrl = `${STREAMLIT_URL}/?api=chat&message=${encodeURIComponent(message)}`;
+    
+    const response = await fetch(apiUrl, {
       method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+      },
       signal: controller.signal,
     });
     
     clearTimeout(timeoutId);
     
     if (response.ok) {
-      // If the main app is accessible, we know it's awake
-      // But we can't directly query it, so we'll return a message indicating the user should use the app directly
-      console.log('Streamlit app is accessible');
-      return {
-        response: `I can see that the enhanced AI assistant is available! For the most detailed and accurate responses about Nahiyan's background, please visit the full AI assistant at: ${STREAMLIT_URL}
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/json')) {
+        // If we get JSON response, parse it
+        const data = await response.json();
+        
+        if (data.response) {
+          console.log('Streamlit chatbot responded successfully');
+          return {
+            response: data.response,
+            status: 'success'
+          };
+        } else if (data.error) {
+          console.warn('Streamlit chatbot returned error:', data.error);
+          return {
+            response: '',
+            status: 'error'
+          };
+        }
+      } else {
+        // If we get HTML response, the app is awake but not returning JSON
+        // This means the API endpoint might not be working as expected
+        console.log('Streamlit app is awake but API endpoint not responding correctly');
+        return {
+          response: `The enhanced AI assistant is available! For the most comprehensive responses about Nahiyan's background, experience, and projects, please visit: ${STREAMLIT_URL}
 
-In the meantime, I can provide basic information about his experience, education, and projects. What would you like to know?`,
-        status: 'success'
-      };
+I can provide basic information here. What would you like to know?`,
+          status: 'success'
+        };
+      }
     } else if (response.status >= 500) {
       console.log('Streamlit app appears to be sleeping (status:', response.status, ')');
       return {
         response: '',
         status: 'sleeping'
       };
-    } else {
-      console.warn('Streamlit app returned error:', response.status);
-      return {
-        response: '',
-        status: 'error'
-      };
     }
+    
+    // Fallback: try health check
+    return await fallbackHealthCheck();
     
   } catch (error) {
     console.warn('Error connecting to Streamlit app:', error.message);
@@ -75,6 +98,31 @@ In the meantime, I can provide basic information about his experience, education
   }
 }
 
+async function fallbackHealthCheck(): Promise<StreamlitResponse> {
+  const STREAMLIT_URL = 'https://askme-about-nahiyan.streamlit.app';
+  
+  try {
+    const healthUrl = `${STREAMLIT_URL}/?api=health`;
+    const response = await fetch(healthUrl, { 
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+    
+    if (response.ok) {
+      return {
+        response: `The enhanced AI assistant is available! Visit ${STREAMLIT_URL} for the most detailed responses about Nahiyan's background, experience, and projects.
+
+I can provide basic information here. What would you like to know?`,
+        status: 'success'
+      };
+    } else {
+      return { response: '', status: 'sleeping' };
+    }
+  } catch (error) {
+    return { response: '', status: 'sleeping' };
+  }
+}
+
 // Health check to see if the app is responsive
 export async function checkStreamlitHealth(): Promise<'available' | 'sleeping' | 'error'> {
   const STREAMLIT_URL = 'https://askme-about-nahiyan.streamlit.app';
@@ -83,15 +131,24 @@ export async function checkStreamlitHealth(): Promise<'available' | 'sleeping' |
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout for health check
     
-    const response = await fetch(STREAMLIT_URL, {
+    // Try the health API endpoint first
+    const healthUrl = `${STREAMLIT_URL}/?api=health`;
+    const response = await fetch(healthUrl, {
       method: 'GET',
+      headers: { 'Accept': 'application/json' },
       signal: controller.signal,
     });
     
     clearTimeout(timeoutId);
     
     if (response.ok) {
-      return 'available';
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return 'available';
+      } else {
+        // App is awake but API might not be working perfectly
+        return 'available';
+      }
     } else if (response.status >= 500) {
       return 'sleeping';
     } else {
@@ -128,7 +185,13 @@ export async function wakeUpStreamlitApp(): Promise<boolean> {
     
     if (response.ok) {
       console.log('Streamlit app is now awake');
-      return true;
+      
+      // Wait a moment for the app to fully initialize
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Try the health check to confirm API is working
+      const healthStatus = await checkStreamlitHealth();
+      return healthStatus === 'available';
     }
     
     return false;
