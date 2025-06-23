@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff } from 'lucide-react';
-import { ragQuery } from '../utils/ragSystem';
+import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap } from 'lucide-react';
+import { ragQuery, checkStreamlitStatus } from '../utils/ragSystem';
 
 interface Message {
   id: string;
@@ -23,7 +23,8 @@ const ChatBot = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'fallback' | 'error'>('checking');
+  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'enhanced' | 'basic' | 'waking' | 'error'>('checking');
+  const [isWakingUp, setIsWakingUp] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -41,20 +42,48 @@ const ChatBot = () => {
     }
   }, [isOpen, connectionStatus]);
 
+  // Periodically check if the enhanced mode becomes available
+  useEffect(() => {
+    if (connectionStatus === 'basic' || connectionStatus === 'waking') {
+      const interval = setInterval(async () => {
+        const status = await checkStreamlitStatus();
+        if (status === 'available') {
+          setConnectionStatus('enhanced');
+          
+          // Add a system message about enhanced mode being available
+          const systemMessage: Message = {
+            id: Date.now().toString(),
+            text: "🎉 Enhanced AI mode is now active! I can now provide more detailed and accurate responses about Nahiyan's background and expertise.",
+            isUser: false,
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, systemMessage]);
+        }
+      }, 15000); // Check every 15 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [connectionStatus]);
+
   const checkConnectionStatus = async () => {
     try {
-      // Try a simple test query to check if the full RAG system is working
-      const response = await ragQuery('test connection');
+      setConnectionStatus('checking');
+      const status = await checkStreamlitStatus();
       
-      // Check if the response indicates fallback mode
-      if (response.includes('I apologize') || response.includes('limited')) {
-        setConnectionStatus('fallback');
+      if (status === 'available') {
+        setConnectionStatus('enhanced');
+      } else if (status === 'sleeping') {
+        setConnectionStatus('basic');
+        setIsWakingUp(true);
+        
+        // The wake-up process is handled in ragQuery
+        setTimeout(() => setIsWakingUp(false), 30000); // Stop showing "waking" after 30 seconds
       } else {
-        setConnectionStatus('connected');
+        setConnectionStatus('basic');
       }
     } catch (error) {
-      console.log('RAG system check failed:', error);
-      setConnectionStatus('fallback');
+      console.log('Connection status check failed:', error);
+      setConnectionStatus('basic');
     }
   };
 
@@ -84,12 +113,12 @@ const ChatBot = () => {
 
       setMessages(prev => [...prev, botMessage]);
       
-      // Update connection status based on response quality
+      // Update connection status based on response
       if (connectionStatus === 'checking') {
-        if (response.includes('I apologize') || response.includes('limited')) {
-          setConnectionStatus('fallback');
+        if (response.includes('basic mode') || response.includes('starting up')) {
+          setConnectionStatus('basic');
         } else {
-          setConnectionStatus('connected');
+          setConnectionStatus('enhanced');
         }
       }
     } catch (error) {
@@ -97,14 +126,14 @@ const ChatBot = () => {
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I apologize, but I'm having trouble processing your request right now. The AI assistant is running in limited mode. Please try asking your question in a different way, or contact Nahiyan directly at nahiyan.cuet@gmail.com.",
+        text: "I apologize, but I'm having trouble processing your request right now. Please try asking your question in a different way, or contact Nahiyan directly at nahiyan.cuet@gmail.com.",
         isUser: false,
         timestamp: new Date(),
         isError: true
       };
 
       setMessages(prev => [...prev, errorMessage]);
-      setConnectionStatus('fallback');
+      setConnectionStatus('error');
     } finally {
       setIsLoading(false);
     }
@@ -121,10 +150,12 @@ const ChatBot = () => {
     switch (connectionStatus) {
       case 'checking':
         return <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin text-yellow-500" />;
-      case 'connected':
-        return <Wifi className="w-2 h-2 sm:w-3 sm:h-3 text-green-500" />;
-      case 'fallback':
-        return <WifiOff className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" />;
+      case 'enhanced':
+        return <Zap className="w-2 h-2 sm:w-3 sm:h-3 text-green-500" />;
+      case 'basic':
+        return isWakingUp ? <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin text-blue-500" /> : <Wifi className="w-2 h-2 sm:w-3 sm:h-3 text-orange-500" />;
+      case 'waking':
+        return <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin text-blue-500" />;
       case 'error':
         return <AlertCircle className="w-2 h-2 sm:w-3 sm:h-3 text-red-500" />;
       default:
@@ -136,10 +167,12 @@ const ChatBot = () => {
     switch (connectionStatus) {
       case 'checking':
         return 'Connecting...';
-      case 'connected':
+      case 'enhanced':
         return 'AI Assistant (Enhanced Mode)';
-      case 'fallback':
-        return 'AI Assistant (Basic Mode)';
+      case 'basic':
+        return isWakingUp ? 'AI Assistant (Waking Up...)' : 'AI Assistant (Basic Mode)';
+      case 'waking':
+        return 'AI Assistant (Waking Up...)';
       case 'error':
         return 'AI Assistant (Limited)';
       default:
@@ -151,10 +184,12 @@ const ChatBot = () => {
     switch (connectionStatus) {
       case 'checking':
         return 'Initializing AI capabilities...';
-      case 'connected':
+      case 'enhanced':
         return 'Full AI features available';
-      case 'fallback':
-        return 'Basic responses available';
+      case 'basic':
+        return isWakingUp ? 'Enhanced mode starting up...' : 'Basic responses available';
+      case 'waking':
+        return 'Enhanced mode starting up...';
       case 'error':
         return 'Limited functionality';
       default:
@@ -211,11 +246,29 @@ const ChatBot = () => {
             </div>
 
             {/* Connection Status Banner */}
-            {connectionStatus === 'fallback' && (
+            {connectionStatus === 'basic' && !isWakingUp && (
               <div className="px-3 sm:px-4 py-2 bg-orange-500/20 border-b border-orange-500/30">
                 <p className="text-xs text-orange-700 dark:text-orange-300 flex items-center space-x-1">
-                  <WifiOff className="w-2 h-2 sm:w-3 sm:h-3" />
-                  <span>Running in basic mode - enhanced AI features unavailable</span>
+                  <Wifi className="w-2 h-2 sm:w-3 sm:h-3" />
+                  <span>Running in basic mode - enhanced AI is starting up</span>
+                </p>
+              </div>
+            )}
+
+            {(connectionStatus === 'waking' || isWakingUp) && (
+              <div className="px-3 sm:px-4 py-2 bg-blue-500/20 border-b border-blue-500/30">
+                <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center space-x-1">
+                  <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin" />
+                  <span>Enhanced AI mode is waking up...</span>
+                </p>
+              </div>
+            )}
+
+            {connectionStatus === 'enhanced' && (
+              <div className="px-3 sm:px-4 py-2 bg-green-500/20 border-b border-green-500/30">
+                <p className="text-xs text-green-700 dark:text-green-300 flex items-center space-x-1">
+                  <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
+                  <span>Enhanced AI mode active - full capabilities available</span>
                 </p>
               </div>
             )}

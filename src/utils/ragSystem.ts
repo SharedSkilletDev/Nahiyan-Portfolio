@@ -1,35 +1,35 @@
-import { generateCompletion } from './completion';
-import { findSimilarChunks } from './faissRetrieval';
+import { queryStreamlitChatbot, queryStreamlitChatbotViaIframe, wakeUpStreamlitApp } from './streamlitChatbot';
 import { findBestResponse } from './fallbackResponses';
 
 export async function ragQuery(query: string): Promise<string> {
   try {
     console.log('Processing RAG query:', query);
     
-    // Find relevant chunks using the FAISS-based retrieval
-    const relevantChunks = findSimilarChunks(query, 5);
-    console.log(`Found ${relevantChunks.length} relevant chunks`);
+    // First, try to query the Streamlit chatbot
+    const streamlitResult = await queryStreamlitChatbot(query);
     
-    // Create context from relevant chunks
-    const context = relevantChunks.map(chunk => chunk.text).join('\n\n');
-    
-    // Generate response using the context
-    const prompt = `You are Nahiyan Bin Noor's AI assistant. Use the following information about Nahiyan to answer the user's question accurately and helpfully. If the information isn't available in the context, politely say so and suggest contacting Nahiyan directly.
+    if (streamlitResult.status === 'success') {
+      console.log('Streamlit chatbot responded successfully');
+      return streamlitResult.response;
+    } else if (streamlitResult.status === 'sleeping') {
+      console.log('Streamlit app is sleeping, attempting to wake it up...');
+      
+      // Try to wake up the app in the background
+      wakeUpStreamlitApp().then(success => {
+        if (success) {
+          console.log('Streamlit app wake-up successful');
+        } else {
+          console.log('Streamlit app wake-up failed');
+        }
+      });
+      
+      // Return fallback response while the app wakes up
+      const fallbackResponse = findBestResponse(query);
+      return `${fallbackResponse}
 
-Context about Nahiyan:
-${context}
-
-User Question: ${query}
-
-Please provide a helpful and accurate response based on the information provided:`;
-
-    try {
-      const response = await generateCompletion(prompt);
-      console.log('Completion generated successfully');
-      return response;
-    } catch (error) {
-      console.warn('Completion generation failed, using fallback:', error.message);
-      // Fall back to pattern matching if completion fails
+*Note: I'm currently running in basic mode. The enhanced AI assistant is starting up and will be available shortly for more detailed responses.*`;
+    } else {
+      console.log('Streamlit chatbot error, using fallback');
       return findBestResponse(query);
     }
     
@@ -37,5 +37,15 @@ Please provide a helpful and accurate response based on the information provided
     console.error('RAG query failed:', error);
     console.log('Using fallback response system');
     return findBestResponse(query);
+  }
+}
+
+// Function to check if Streamlit app is available
+export async function checkStreamlitStatus(): Promise<'available' | 'sleeping' | 'error'> {
+  try {
+    const result = await queryStreamlitChatbotViaIframe('test');
+    return result.status === 'success' ? 'available' : result.status;
+  } catch (error) {
+    return 'error';
   }
 }
