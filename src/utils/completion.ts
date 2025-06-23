@@ -1,8 +1,13 @@
 export async function generateCompletion(prompt: string): Promise<string> {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
   
   if (!supabaseUrl) {
     throw new Error('Supabase URL not found. Please set VITE_SUPABASE_URL in your environment variables.');
+  }
+
+  if (!supabaseAnonKey) {
+    throw new Error('Supabase anonymous key not found. Please set VITE_SUPABASE_ANON_KEY in your environment variables.');
   }
 
   try {
@@ -13,6 +18,7 @@ export async function generateCompletion(prompt: string): Promise<string> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseAnonKey}`,
       },
       body: JSON.stringify({ prompt }),
       signal: controller.signal,
