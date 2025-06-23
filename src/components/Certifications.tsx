@@ -134,7 +134,7 @@ const Certifications = () => {
           {/* Additional info */}
           <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
             <p>These digital badges verify my expertise in AWS cloud services and AI technologies. 
-              <a href="https://www.credly.com/users/nahiyan-bin-noor" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 ml-1">
+              <a href="https://www.credly.com/users/nahiyan-bin-noor.be33caad" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 ml-1">
                 View all badges on Credly →
               </a>
             </p>
