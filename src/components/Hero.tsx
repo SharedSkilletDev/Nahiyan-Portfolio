@@ -244,7 +244,7 @@ const Hero = () => {
           >
             <ChevronDown className="w-6 h-6 text-gray-400 dark:text-gray-500" />
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
