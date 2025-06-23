@@ -76,6 +76,21 @@ Key Publications:
 "Toxicity in Reddit Discussion Threads: Impacts and Predictive Insights" at the 16th International Conference on Social Computing, Behavioral-Cultural Modeling Prediction...
 "Comparative Study Between Decision Tree, SVM, and KNN to Predict Anaemic Condition" in IEEE Xplore. (Cited by 36)
 
+News & Media Coverage
+Nahiyan has been featured in various news outlets and publications for his groundbreaking research and achievements:
+
+UAMS Researcher Develops AI-Powered Clinical Decision Support Tools - Featured in Arkansas Democrat-Gazette for revolutionizing healthcare with machine learning models that improve patient risk stratification.
+
+Best Paper Award Winner: Analyzing Social Media Toxicity During COVID-19 - Recognized by IEEE Computer Society for groundbreaking research on toxicity patterns across social media platforms.
+
+Machine Learning Models Predict Veteran Healthcare Outcomes - Featured in Healthcare IT News for research demonstrating how AI can predict retention, overdoses, and mortality among US military veterans.
+
+Telehealth Impact on Opioid Use Disorder: A Data-Driven Analysis - Covered by Modern Healthcare for comprehensive study of 180,000 patients revealing telehealth benefits.
+
+Outstanding Graduate Student Award: Excellence in Biomedical Informatics - Featured in UALR News for exceptional academic achievement and research contributions.
+
+AI-Powered Medical Research Assistant Transforms Literature Review - Covered by MedTech Breakthrough for innovative PubMedSearch tool leveraging OpenAI API.
+
 Skills & Certifications
 Programming & Databases: Python, SQL
 AI/ML Frameworks: TensorFlow, PyTorch, ONNX
