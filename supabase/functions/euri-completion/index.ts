@@ -41,14 +41,20 @@ Deno.serve(async (req: Request) => {
 
     const apiKey = Deno.env.get("EURI_API_KEY");
     if (!apiKey) {
+      console.error("EURI_API_KEY environment variable not found");
       return new Response(
-        JSON.stringify({ error: "EURI API key not configured" }),
+        JSON.stringify({ 
+          error: "EURI API key not configured",
+          debug: "Environment variable EURI_API_KEY is missing"
+        }),
         {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
+
+    console.log("Making request to EURI API for completion...");
 
     const response = await fetch("https://api.euri.ai/v1/chat/completions", {
       method: "POST",
@@ -69,11 +75,27 @@ Deno.serve(async (req: Request) => {
       }),
     });
 
+    console.log("EURI API response status:", response.status);
+
     if (!response.ok) {
       const errorData = await response.text();
-      console.error("EURI API error:", errorData);
+      console.error("EURI API error response:", errorData);
+      
+      let errorMessage = "Failed to generate completion";
+      try {
+        const parsedError = JSON.parse(errorData);
+        errorMessage = parsedError.error?.message || parsedError.message || errorMessage;
+      } catch (e) {
+        // If parsing fails, use the raw error data
+        errorMessage = errorData || errorMessage;
+      }
+
       return new Response(
-        JSON.stringify({ error: "Failed to generate completion" }),
+        JSON.stringify({ 
+          error: errorMessage,
+          status: response.status,
+          debug: `EURI API returned ${response.status}: ${errorData}`
+        }),
         {
           status: response.status,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -82,8 +104,10 @@ Deno.serve(async (req: Request) => {
     }
 
     const data = await response.json();
+    console.log("EURI API response structure:", Object.keys(data));
 
     if (data?.choices?.[0]?.message?.content) {
+      console.log("Successfully generated completion");
       return new Response(
         JSON.stringify({ content: data.choices[0].message.content.trim() }),
         {
@@ -91,8 +115,12 @@ Deno.serve(async (req: Request) => {
         }
       );
     } else {
+      console.error("Invalid response structure:", data);
       return new Response(
-        JSON.stringify({ error: "Invalid response format from completion API" }),
+        JSON.stringify({ 
+          error: "Invalid response format from completion API",
+          debug: `Response structure: ${JSON.stringify(Object.keys(data))}`
+        }),
         {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -102,7 +130,10 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     console.error("Edge function error:", error);
     return new Response(
-      JSON.stringify({ error: "Internal server error" }),
+      JSON.stringify({ 
+        error: "Internal server error",
+        debug: error.message || "Unknown error occurred"
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

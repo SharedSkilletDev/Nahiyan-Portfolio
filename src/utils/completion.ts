@@ -16,7 +16,11 @@ export async function generateCompletion(prompt: string): Promise<string> {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(`Failed to generate completion: ${errorData.error || response.statusText}`);
+      console.error('Completion API detailed error:', errorData);
+      
+      // Provide more detailed error information
+      const errorMessage = errorData.debug || errorData.error || response.statusText;
+      throw new Error(`Failed to generate completion (${response.status}): ${errorMessage}`);
     }
 
     const data = await response.json();
@@ -24,6 +28,7 @@ export async function generateCompletion(prompt: string): Promise<string> {
     if (data?.content) {
       return data.content;
     } else {
+      console.error('Invalid completion response:', data);
       throw new Error('Invalid response format from completion API');
     }
   } catch (error) {

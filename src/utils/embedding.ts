@@ -16,7 +16,11 @@ export async function createEmbedding(text: string): Promise<number[]> {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(`Failed to create embedding: ${errorData.error || response.statusText}`);
+      console.error('Embedding API detailed error:', errorData);
+      
+      // Provide more detailed error information
+      const errorMessage = errorData.debug || errorData.error || response.statusText;
+      throw new Error(`Failed to create embedding (${response.status}): ${errorMessage}`);
     }
 
     const data = await response.json();
@@ -24,6 +28,7 @@ export async function createEmbedding(text: string): Promise<number[]> {
     if (data?.embedding) {
       return data.embedding;
     } else {
+      console.error('Invalid embedding response:', data);
       throw new Error('Invalid response format from embedding API');
     }
   } catch (error) {
