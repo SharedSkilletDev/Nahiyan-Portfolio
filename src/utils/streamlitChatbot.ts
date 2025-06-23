@@ -11,17 +11,20 @@ export async function queryStreamlitChatbot(message: string): Promise<StreamlitR
     
     // Create a timeout controller for the request
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 second timeout
     
-    // Try to make a request to your Streamlit app
-    // Note: This is a simplified approach - you might need to adjust based on your Streamlit app's API
+    // Make request to your Streamlit app's API endpoint
     const response = await fetch(`${STREAMLIT_URL}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Origin': window.location.origin,
       },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ 
+        message: message,
+        timestamp: new Date().toISOString()
+      }),
       signal: controller.signal,
     });
     
@@ -31,12 +34,12 @@ export async function queryStreamlitChatbot(message: string): Promise<StreamlitR
       const data = await response.json();
       console.log('Streamlit chatbot responded successfully');
       return {
-        response: data.response || data.message || 'Response received from chatbot',
+        response: data.response || data.answer || 'Response received from enhanced AI assistant',
         status: 'success'
       };
-    } else if (response.status === 503 || response.status === 502) {
+    } else if (response.status === 503 || response.status === 502 || response.status === 504) {
       // Service unavailable - likely sleeping
-      console.log('Streamlit app appears to be sleeping');
+      console.log('Streamlit app appears to be sleeping (status:', response.status, ')');
       return {
         response: '',
         status: 'sleeping'
@@ -63,7 +66,8 @@ export async function queryStreamlitChatbot(message: string): Promise<StreamlitR
     // Network errors often indicate the service is sleeping
     if (error.message.includes('fetch') || 
         error.message.includes('network') || 
-        error.message.includes('connection')) {
+        error.message.includes('connection') ||
+        error.message.includes('Failed to fetch')) {
       return {
         response: '',
         status: 'sleeping'
@@ -77,57 +81,37 @@ export async function queryStreamlitChatbot(message: string): Promise<StreamlitR
   }
 }
 
-// Alternative approach using iframe communication if direct API isn't available
-export async function queryStreamlitChatbotViaIframe(message: string): Promise<StreamlitResponse> {
-  return new Promise((resolve) => {
-    const STREAMLIT_URL = 'https://askme-about-nahiyan.streamlit.app';
+// Health check to see if the app is responsive
+export async function checkStreamlitHealth(): Promise<'available' | 'sleeping' | 'error'> {
+  const STREAMLIT_URL = 'https://askme-about-nahiyan.streamlit.app';
+  
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout for health check
     
-    // Create a hidden iframe to test if the app is responsive
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = STREAMLIT_URL;
+    const response = await fetch(`${STREAMLIT_URL}/api/health`, {
+      method: 'GET',
+      signal: controller.signal,
+    });
     
-    let resolved = false;
-    const timeout = setTimeout(() => {
-      if (!resolved) {
-        resolved = true;
-        document.body.removeChild(iframe);
-        resolve({
-          response: '',
-          status: 'sleeping'
-        });
-      }
-    }, 10000); // 10 second timeout
+    clearTimeout(timeoutId);
     
-    iframe.onload = () => {
-      if (!resolved) {
-        resolved = true;
-        clearTimeout(timeout);
-        document.body.removeChild(iframe);
-        
-        // If iframe loads successfully, the app is awake
-        // You would need to implement actual communication here
-        resolve({
-          response: `I'm now connected to the enhanced AI assistant! The service is ready to answer your questions about Nahiyan with full capabilities.`,
-          status: 'success'
-        });
-      }
-    };
+    if (response.ok) {
+      return 'available';
+    } else if (response.status >= 500) {
+      return 'sleeping';
+    } else {
+      return 'error';
+    }
     
-    iframe.onerror = () => {
-      if (!resolved) {
-        resolved = true;
-        clearTimeout(timeout);
-        document.body.removeChild(iframe);
-        resolve({
-          response: '',
-          status: 'error'
-        });
-      }
-    };
-    
-    document.body.appendChild(iframe);
-  });
+  } catch (error) {
+    if (error.name === 'AbortError' || 
+        error.message.includes('fetch') || 
+        error.message.includes('network')) {
+      return 'sleeping';
+    }
+    return 'error';
+  }
 }
 
 // Wake up the Streamlit app by making a simple request
@@ -138,16 +122,23 @@ export async function wakeUpStreamlitApp(): Promise<boolean> {
     console.log('Attempting to wake up Streamlit app...');
     
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for wake-up
+    const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout for wake-up
     
-    const response = await fetch(STREAMLIT_URL, {
-      method: 'GET',
-      signal: controller.signal,
-    });
+    // Make multiple requests to ensure wake-up
+    const wakeUpPromises = [
+      fetch(STREAMLIT_URL, { method: 'GET', signal: controller.signal }),
+      fetch(`${STREAMLIT_URL}/api/health`, { method: 'GET', signal: controller.signal }),
+    ];
     
+    const responses = await Promise.allSettled(wakeUpPromises);
     clearTimeout(timeoutId);
     
-    if (response.ok) {
+    // If any request succeeds, the app is awake
+    const hasSuccess = responses.some(result => 
+      result.status === 'fulfilled' && result.value.ok
+    );
+    
+    if (hasSuccess) {
       console.log('Streamlit app is now awake');
       return true;
     }

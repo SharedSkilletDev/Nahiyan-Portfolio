@@ -1,4 +1,4 @@
-import { queryStreamlitChatbot, queryStreamlitChatbotViaIframe, wakeUpStreamlitApp } from './streamlitChatbot';
+import { queryStreamlitChatbot, checkStreamlitHealth, wakeUpStreamlitApp } from './streamlitChatbot';
 import { findBestResponse } from './fallbackResponses';
 
 export async function ragQuery(query: string): Promise<string> {
@@ -43,8 +43,7 @@ export async function ragQuery(query: string): Promise<string> {
 // Function to check if Streamlit app is available
 export async function checkStreamlitStatus(): Promise<'available' | 'sleeping' | 'error'> {
   try {
-    const result = await queryStreamlitChatbotViaIframe('test');
-    return result.status === 'success' ? 'available' : result.status;
+    return await checkStreamlitHealth();
   } catch (error) {
     return 'error';
   }
