@@ -34,14 +34,14 @@ function App() {
       {/* Theme Toggle Button */}
       <motion.button
         onClick={toggleDarkMode}
-        className="fixed top-4 right-4 z-50 p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300"
+        className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
         {darkMode ? (
-          <Sun className="w-5 h-5 text-yellow-400" />
+          <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
         ) : (
-          <Moon className="w-5 h-5 text-blue-600" />
+          <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
         )}
       </motion.button>
 

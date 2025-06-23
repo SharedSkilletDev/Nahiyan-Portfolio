@@ -61,24 +61,24 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="py-20 bg-white/5 dark:bg-dark-900/50">
-      <div className="container mx-auto px-6">
+    <section id="projects" className="py-12 sm:py-16 lg:py-20 bg-white/5 dark:bg-dark-900/50">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
             Featured Projects
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
             A showcase of AI/ML projects highlighting technical skills and passion for building practical solutions
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -88,28 +88,28 @@ const Projects = () => {
               viewport={{ once: true }}
               className="group h-full"
             >
-              <div className="h-full p-6 rounded-2xl bg-white/10 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300 hover:scale-105">
+              <div className="h-full p-4 sm:p-6 rounded-2xl bg-white/10 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300 hover:scale-105">
                 {/* Project Icon */}
-                <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${project.color} flex items-center justify-center mb-4`}>
-                  <project.icon className="w-6 h-6 text-white" />
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r ${project.color} flex items-center justify-center mb-3 sm:mb-4`}>
+                  <project.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
 
                 {/* Project Title */}
-                <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 leading-tight">
                   {project.title}
                 </h3>
 
                 {/* Project Description */}
-                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 leading-relaxed">
                   {project.description}
                 </p>
 
                 {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-1 sm:gap-2 mb-4 sm:mb-6">
                   {project.tech.map((tech, techIndex) => (
                     <span
                       key={techIndex}
-                      className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 rounded-full"
+                      className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 rounded-full"
                     >
                       {tech}
                     </span>
@@ -117,19 +117,19 @@ const Projects = () => {
                 </div>
 
                 {/* Project Links */}
-                <div className="flex space-x-4">
+                <div className="flex space-x-3 sm:space-x-4">
                   <a
                     href={project.github}
-                    className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                    className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
                   >
-                    <Github className="w-4 h-4 mr-1" />
+                    <Github className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                     Code
                   </a>
                   <a
                     href={project.demo}
-                    className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                    className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
                   >
-                    <ExternalLink className="w-4 h-4 mr-1" />
+                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                     Demo
                   </a>
                 </div>
