@@ -138,10 +138,15 @@ const Publications = () => {
                           <span>{pub.citations} citations</span>
                         </div>
                       </div>
-                      <button className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 self-start">
+                      <a
+                        href="https://scholar.google.com/citations?user=GwgCEz8AAAAJ&hl=en"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 self-start"
+                      >
                         <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                         View
-                      </button>
+                      </a>
                     </div>
                     <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
                       {pub.description}
@@ -162,7 +167,9 @@ const Publications = () => {
           className="text-center mt-8 sm:mt-12"
         >
           <a
-            href="#"
+            href="https://scholar.google.com/citations?user=GwgCEz8AAAAJ&hl=en"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base"
           >
             <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
