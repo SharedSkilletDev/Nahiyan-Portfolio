@@ -1,3 +1,4 @@
+import { queryStreamlitChatbot, checkStreamlitHealth, wakeUpStreamlitApp, testStreamlitConnection } from './streamlitChatbot';
 import { findBestResponse } from './fallbackResponses';
 
 export async function ragQuery(query: string): Promise<string> {
@@ -6,17 +7,37 @@ export async function ragQuery(query: string): Promise<string> {
     
     // For debugging - you can remove this later
     if (query.toLowerCase().includes('test connection')) {
-      return 'Connection test completed. The Enhanced AI Assistant is available via the embedded interface. Click the "Enhanced AI" button for the full experience with advanced RAG capabilities.';
+      await testStreamlitConnection();
+      return 'Connection test completed. Check the browser console for details.';
     }
     
-    // Always use fallback responses for the basic chatbot
-    // The enhanced AI is now available through the embedded interface
-    const fallbackResponse = findBestResponse(query);
+    // First, try to query the Streamlit chatbot
+    const streamlitResult = await queryStreamlitChatbot(query);
     
-    // Add a note about the enhanced AI being available
-    return `${fallbackResponse}
+    if (streamlitResult.status === 'success') {
+      console.log('Streamlit chatbot responded successfully');
+      return streamlitResult.response;
+    } else if (streamlitResult.status === 'sleeping') {
+      console.log('Streamlit app is sleeping, attempting to wake it up...');
+      
+      // Try to wake up the app in the background
+      wakeUpStreamlitApp().then(success => {
+        if (success) {
+          console.log('Streamlit app wake-up successful');
+        } else {
+          console.log('Streamlit app wake-up failed');
+        }
+      });
+      
+      // Return fallback response while the app wakes up
+      const fallbackResponse = findBestResponse(query);
+      return `${fallbackResponse}
 
-💡 **For more comprehensive responses**, try the Enhanced AI Assistant with advanced RAG capabilities by clicking the "Enhanced AI" button!`;
+*Note: I'm currently running in basic mode. The enhanced AI assistant is starting up and will be available shortly. For the most comprehensive responses, you can also visit: https://askme-about-nahiyan.streamlit.app*`;
+    } else {
+      console.log('Streamlit chatbot error, using fallback');
+      return findBestResponse(query);
+    }
     
   } catch (error) {
     console.error('RAG query failed:', error);
@@ -25,35 +46,11 @@ export async function ragQuery(query: string): Promise<string> {
   }
 }
 
-// Function to check if Streamlit app is available (for status indicators)
+// Function to check if Streamlit app is available
 export async function checkStreamlitStatus(): Promise<'available' | 'sleeping' | 'error'> {
-  const STREAMLIT_URLS = [
-    'https://askme-about-nahiyan.streamlit.app',
-    'https://nahiyan-ai-assistant.streamlit.app',
-    'https://nahiyan-portfolio-ai.streamlit.app'
-  ];
-
-  for (const url of STREAMLIT_URLS) {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
-      
-      const response = await fetch(url, {
-        method: 'HEAD',
-        signal: controller.signal,
-        mode: 'no-cors'
-      });
-      
-      clearTimeout(timeoutId);
-      
-      if (response.ok || response.type === 'opaque') {
-        return 'available';
-      }
-    } catch (error) {
-      console.log(`Failed to check ${url}:`, error);
-      continue; // Try next URL
-    }
+  try {
+    return await checkStreamlitHealth();
+  } catch (error) {
+    return 'error';
   }
-  
-  return 'sleeping'; // All URLs failed, likely sleeping
 }
