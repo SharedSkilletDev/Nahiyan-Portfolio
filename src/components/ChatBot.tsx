@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader, AlertCircle, Wifi, WifiOff, Zap, ExternalLink } from 'lucide-react';
 import { ragQuery, checkStreamlitStatus } from '../utils/ragSystem';
 
 interface Message {
@@ -16,7 +16,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Nahiyan's AI assistant. I can answer questions about his background, experience, research, and projects. What would you like to know?",
+      text: "Hi! I'm Nahiyan's AI assistant. I can answer questions about his background, experience, research, and projects. For the most detailed responses, you can also visit the enhanced AI assistant. What would you like to know?",
       isUser: false,
       timestamp: new Date()
     }
@@ -53,7 +53,7 @@ const ChatBot = () => {
           // Add a system message about enhanced mode being available
           const systemMessage: Message = {
             id: Date.now().toString(),
-            text: "🎉 Enhanced AI mode is now active! I can now provide more detailed and accurate responses about Nahiyan's background and expertise.",
+            text: "🎉 Enhanced AI mode is now active! The full AI assistant is available at https://askme-about-nahiyan.streamlit.app for the most comprehensive responses.",
             isUser: false,
             timestamp: new Date()
           };
@@ -117,8 +117,10 @@ const ChatBot = () => {
       if (connectionStatus === 'checking') {
         if (response.includes('basic mode') || response.includes('starting up')) {
           setConnectionStatus('basic');
-        } else {
+        } else if (response.includes('enhanced AI assistant is available')) {
           setConnectionStatus('enhanced');
+        } else {
+          setConnectionStatus('basic');
         }
       }
     } catch (error) {
@@ -168,7 +170,7 @@ const ChatBot = () => {
       case 'checking':
         return 'Connecting...';
       case 'enhanced':
-        return 'AI Assistant (Enhanced Mode)';
+        return 'AI Assistant (Enhanced Available)';
       case 'basic':
         return isWakingUp ? 'AI Assistant (Waking Up...)' : 'AI Assistant (Basic Mode)';
       case 'waking':
@@ -185,7 +187,7 @@ const ChatBot = () => {
       case 'checking':
         return 'Initializing AI capabilities...';
       case 'enhanced':
-        return 'Full AI features available';
+        return 'Enhanced AI available at streamlit app';
       case 'basic':
         return isWakingUp ? 'Enhanced mode starting up...' : 'Basic responses available';
       case 'waking':
@@ -237,15 +239,44 @@ const ChatBot = () => {
                   <p className="text-xs text-gray-500 dark:text-gray-400">{getStatusDescription()}</p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200"
-              >
-                <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
-              </button>
+              <div className="flex items-center space-x-2">
+                {/* Enhanced AI Link */}
+                <a
+                  href="https://askme-about-nahiyan.streamlit.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200 text-blue-500 hover:text-blue-400"
+                  title="Open Enhanced AI Assistant"
+                >
+                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                </a>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-1 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200"
+                >
+                  <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
+                </button>
+              </div>
             </div>
 
             {/* Connection Status Banner */}
+            {connectionStatus === 'enhanced' && (
+              <div className="px-3 sm:px-4 py-2 bg-green-500/20 border-b border-green-500/30">
+                <p className="text-xs text-green-700 dark:text-green-300 flex items-center space-x-1">
+                  <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
+                  <span>Enhanced AI is available! </span>
+                  <a 
+                    href="https://askme-about-nahiyan.streamlit.app" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="underline hover:no-underline"
+                  >
+                    Visit here
+                  </a>
+                </p>
+              </div>
+            )}
+
             {connectionStatus === 'basic' && !isWakingUp && (
               <div className="px-3 sm:px-4 py-2 bg-orange-500/20 border-b border-orange-500/30">
                 <p className="text-xs text-orange-700 dark:text-orange-300 flex items-center space-x-1">
@@ -260,15 +291,6 @@ const ChatBot = () => {
                 <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center space-x-1">
                   <Loader className="w-2 h-2 sm:w-3 sm:h-3 animate-spin" />
                   <span>Enhanced AI mode is waking up...</span>
-                </p>
-              </div>
-            )}
-
-            {connectionStatus === 'enhanced' && (
-              <div className="px-3 sm:px-4 py-2 bg-green-500/20 border-b border-green-500/30">
-                <p className="text-xs text-green-700 dark:text-green-300 flex items-center space-x-1">
-                  <Zap className="w-2 h-2 sm:w-3 sm:h-3" />
-                  <span>Enhanced AI mode active - full capabilities available</span>
                 </p>
               </div>
             )}

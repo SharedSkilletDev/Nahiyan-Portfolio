@@ -27,7 +27,7 @@ export async function ragQuery(query: string): Promise<string> {
       const fallbackResponse = findBestResponse(query);
       return `${fallbackResponse}
 
-*Note: I'm currently running in basic mode. The enhanced AI assistant is starting up and will be available shortly for more detailed responses.*`;
+*Note: I'm currently running in basic mode. The enhanced AI assistant is starting up and will be available shortly. For the most comprehensive responses, you can also visit: https://askme-about-nahiyan.streamlit.app*`;
     } else {
       console.log('Streamlit chatbot error, using fallback');
       return findBestResponse(query);
