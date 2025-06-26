@@ -1,8 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, Github, Brain, Search, Heart, TrendingUp, MessageSquare, Activity, Microscope, BarChart3 } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ExternalLink, Github, Brain, Search, Heart, TrendingUp, MessageSquare, Activity, Microscope, BarChart3, Lock, X } from 'lucide-react';
 
 const Projects = () => {
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [currentProject, setCurrentProject] = useState('');
+
+  const handlePrivateProjectClick = (projectTitle: string, linkType: string) => {
+    setCurrentProject(`${projectTitle} - ${linkType}`);
+    setShowPrivacyModal(true);
+  };
+
   const projects = [
     {
       title: 'Clinical Summarization System & AI Research Tools',
@@ -10,8 +18,9 @@ const Projects = () => {
       icon: Microscope,
       tech: ['AWS Bedrock', 'Lambda', 'S3', 'RAG', 'LLaMA-7B', 'HIPAA Compliance'],
       color: 'from-emerald-500 to-teal-500',
-      github: '#',
-      demo: '#'
+      github: 'private',
+      demo: 'private',
+      isPrivate: true
     },
     {
       title: 'Comparative Analysis of SOTA Vision Models',
@@ -87,6 +96,15 @@ const Projects = () => {
     }
   ];
 
+  const handleLinkClick = (project: any, linkType: 'github' | 'demo') => {
+    if (project.isPrivate) {
+      handlePrivateProjectClick(project.title, linkType === 'github' ? 'Source Code' : 'Demo');
+    } else {
+      const url = linkType === 'github' ? project.github : project.demo;
+      window.open(url, '_blank');
+    }
+  };
+
   return (
     <section id="projects" className="py-12 sm:py-16 lg:py-20 bg-white/5 dark:bg-dark-900/50">
       <div className="container mx-auto px-4 sm:px-6">
@@ -118,13 +136,23 @@ const Projects = () => {
             >
               <div className="h-full p-4 sm:p-6 rounded-2xl bg-white/10 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700/50 hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300 hover:scale-105">
                 {/* Project Icon */}
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r ${project.color} flex items-center justify-center mb-3 sm:mb-4`}>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r ${project.color} flex items-center justify-center mb-3 sm:mb-4 relative`}>
                   <project.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  {project.isPrivate && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <Lock className="w-2 h-2 text-white" />
+                    </div>
+                  )}
                 </div>
 
                 {/* Project Title */}
                 <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 leading-tight">
                   {project.title}
+                  {project.isPrivate && (
+                    <span className="ml-2 text-xs bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">
+                      Private
+                    </span>
+                  )}
                 </h3>
 
                 {/* Project Description */}
@@ -146,25 +174,132 @@ const Projects = () => {
 
                 {/* Project Links */}
                 <div className="flex space-x-3 sm:space-x-4">
-                  <a
-                    href={project.github}
+                  <button
+                    onClick={() => handleLinkClick(project, 'github')}
                     className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
                   >
-                    <Github className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    {project.isPrivate ? (
+                      <Lock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    ) : (
+                      <Github className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    )}
                     Code
-                  </a>
-                  <a
-                    href={project.demo}
+                  </button>
+                  <button
+                    onClick={() => handleLinkClick(project, 'demo')}
                     className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
                   >
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    {project.isPrivate ? (
+                      <Lock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    ) : (
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    )}
                     Demo
-                  </a>
+                  </button>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Privacy Modal */}
+        <AnimatePresence>
+          {showPrivacyModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              onClick={() => setShowPrivacyModal(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="bg-white/10 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20 dark:border-gray-700/50 max-w-md w-full mx-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+                      <Lock className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white">
+                      Private Project
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setShowPrivacyModal(false)}
+                    className="p-2 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-full transition-colors duration-200"
+                  >
+                    <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+                    <p className="text-sm sm:text-base text-yellow-700 dark:text-yellow-300 font-medium mb-2">
+                      🔒 Confidential Project
+                    </p>
+                    <p className="text-sm text-yellow-600 dark:text-yellow-400">
+                      <strong>{currentProject}</strong>
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                      This project involves sensitive healthcare data and proprietary algorithms that cannot be publicly shared due to:
+                    </p>
+                    
+                    <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                      <li className="flex items-start">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <span><strong>HIPAA Compliance:</strong> Contains protected health information</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <span><strong>Institutional Policy:</strong> Proprietary research and clinical data</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <span><strong>Privacy Protection:</strong> Patient data confidentiality requirements</span>
+                      </li>
+                    </ul>
+
+                    <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4 mt-4">
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        💡 <strong>Interested in learning more?</strong> I'd be happy to discuss the technical approach, methodologies, and results in a professional setting. Please feel free to contact me directly.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                  <motion.button
+                    onClick={() => setShowPrivacyModal(false)}
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 text-sm font-medium"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Understood
+                  </motion.button>
+                  <motion.a
+                    href="#contact"
+                    onClick={() => setShowPrivacyModal(false)}
+                    className="flex-1 px-4 py-2 border-2 border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white dark:hover:bg-blue-400 dark:hover:text-dark-900 transition-all duration-300 text-center text-sm font-medium"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Contact Me
+                  </motion.a>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
