@@ -19,8 +19,8 @@ const Projects = () => {
       icon: Brain,
       tech: ['ViT', 'CLIP', 'GPT-4o', 'LLaVA', 'LoRA', 'Computer Vision'],
       color: 'from-purple-500 to-pink-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/Traditional-Bangladeshi-Food-Classification-with-LLM',
+      demo: 'https://github.com/Nahiyan140212/Traditional-Bangladeshi-Food-Classification-with-LLM'
     },
     {
       title: 'PubMedSearch - Medical Research Assistant',
@@ -28,8 +28,8 @@ const Projects = () => {
       icon: Search,
       tech: ['Python', 'Streamlit', 'OpenAI API', 'NLP', 'Medical Research'],
       color: 'from-blue-500 to-cyan-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/Pubmed-Article-Search-and-Summarizer',
+      demo: 'https://noor-pubmed-summarizer.streamlit.app/'
     },
     {
       title: 'USMLE Step 1 Assistant',
@@ -37,8 +37,8 @@ const Projects = () => {
       icon: Brain,
       tech: ['RAG', 'LLM', 'Medical Education', 'Context-Aware AI'],
       color: 'from-indigo-500 to-purple-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/MedPrepAI-RAG',
+      demo: 'https://huggingface.co/spaces/Nahiyan14/USMLEPrepAI'
     },
     {
       title: 'Chest Disease Classification Pipeline',
@@ -46,8 +46,8 @@ const Projects = () => {
       icon: Activity,
       tech: ['TensorFlow', 'MLflow', 'DVC', 'Computer Vision', 'Medical Imaging'],
       color: 'from-red-500 to-orange-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/Chest-Disease-Classification-from-Chest-CT-Scan-Image',
+      demo: 'https://github.com/Nahiyan140212/Chest-Disease-Classification-from-Chest-CT-Scan-Image'
     },
     {
       title: 'Predicting Dropout from MOUD',
@@ -55,8 +55,8 @@ const Projects = () => {
       icon: Heart,
       tech: ['Machine Learning', 'Healthcare Analytics', 'Predictive Modeling', 'Clinical Data'],
       color: 'from-pink-500 to-rose-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/Predicting-Dropout-from-Medication-for-Opioid-Use-Disorder',
+      demo: 'https://huggingface.co/spaces/Nahiyan14/Retention_Prediction_App'
     },
     {
       title: 'Stock Market Analyzer & Reporter',
@@ -64,8 +64,8 @@ const Projects = () => {
       icon: TrendingUp,
       tech: ['Financial Analysis', 'LLM', 'API Integration', 'Streamlit', 'Voice Synthesis'],
       color: 'from-yellow-500 to-orange-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/StockAnalyzerAI',
+      demo: 'https://smart-stock-analyzer.streamlit.app/'
     },
     {
       title: 'ResearchBuddy AI',
@@ -73,8 +73,8 @@ const Projects = () => {
       icon: MessageSquare,
       tech: ['Multi-model AI', 'Document Analysis', 'Chatbot', 'API Integration'],
       color: 'from-violet-500 to-purple-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/ResearchBuddyAI',
+      demo: 'https://researchbuddyai.streamlit.app/'
     },
     {
       title: 'Anemia Detection from Eye Images',
@@ -82,8 +82,8 @@ const Projects = () => {
       icon: BarChart3,
       tech: ['Computer Vision', 'Medical Imaging', 'Deep Learning', 'Diagnostic AI'],
       color: 'from-green-500 to-teal-500',
-      github: '#',
-      demo: '#'
+      github: 'https://github.com/Nahiyan140212/Detection-of-Anemia-from-Eye-Conjunctiva-Images-using-Deep-Learning',
+      demo: 'https://huggingface.co/spaces/Nahiyan14/Conjuctiva_Image_Based_Anemia_Prediction'
     }
   ];
 
