@@ -8,6 +8,7 @@ import Projects from './components/Projects';
 import Publications from './components/Publications';
 import Education from './components/Education';
 import Certifications from './components/Certifications';
+import Resume from './components/Resume';
 import Contact from './components/Contact';
 import ChatBot from './components/ChatBot';
 import { Moon, Sun } from 'lucide-react';
@@ -53,6 +54,7 @@ function App() {
       <Publications />
       <Education />
       <Certifications />
+      <Resume />
       <Contact />
       <ChatBot />
     </div>
