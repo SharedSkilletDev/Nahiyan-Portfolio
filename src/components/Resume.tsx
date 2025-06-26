@@ -6,7 +6,7 @@ const Resume = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   // Replace this with your actual S3 bucket URL
-  const resumeUrl = "https://your-bucket-name.s3.amazonaws.com/path-to-your-resume.pdf";
+  const resumeUrl = "https://s3.us-east-1.amazonaws.com/sharedskillet.com/resume_June_2025_nahiyan.pdf";
   
   const handleDownload = async () => {
     setIsLoading(true);
